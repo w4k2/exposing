@@ -1,11 +1,11 @@
 # project-template - A template for scikit-learn extensions
 
-[![Travis Status](https://travis-ci.org/scikit-learn-contrib/project-template.svg?branch=master)](https://travis-ci.org/scikit-learn-contrib/project-template)
+[![Travis Status](https://travis-ci.org/w4k2/exposing.svg?branch=master)](https://travis-ci.org/w4k2/exposing)
 [![Coveralls Status](https://coveralls.io/repos/scikit-learn-contrib/project-template/badge.svg?branch=master&service=github)](https://coveralls.io/r/scikit-learn-contrib/project-template)
 [![CircleCI Status](https://circleci.com/gh/scikit-learn-contrib/project-template.svg?style=shield&circle-token=:circle-token)](https://circleci.com/gh/scikit-learn-contrib/project-template/tree/master)
 
-**project-template** is a template project for 
-[scikit-learn](http://scikit-learn.org/) 
+**project-template** is a template project for
+[scikit-learn](http://scikit-learn.org/)
 compatible extensions.
 
 It aids development of estimators that can be used in scikit-learn pipelines
@@ -23,7 +23,7 @@ To install the module execute:
 ```shell
 $ python setup.py install
 ```
-or 
+or
 ```
 pip install sklearn-template
 ```
@@ -97,7 +97,7 @@ To build the documentation locally, ensure that you have `sphinx`,
 $ pip install sphinx matplotlib sphinx-gallery
 ```
 The documentation contains a home page (`doc/index.rst`), an API
-documentation page (`doc/api.rst`) and a page documenting the `template` module 
+documentation page (`doc/api.rst`) and a page documenting the `template` module
 (`doc/template.rst`). Sphinx allows you to automatically document your modules
 and classes by using the `autodoc` directive (see `template.rst`). To change the
 asthetics of the docs and other paramteres, edit the `doc/conf.py` file. For
@@ -175,15 +175,15 @@ choose `Create and add user key` option. This should grant CircleCI privileges
 to push to the repository `https://github.com/USERNAME/DOC_REPO/`.
 
 If all goes well, you should be able to visit the documentation of your project
-on 
+on
 ```
 https://github.com/USERNAME/DOC_REPO/DOC_URL
 ```
 
 ### 8. Adding Badges
 
-Follow the instructions to add a [Travis Badge](https://docs.travis-ci.com/user/status-images/), 
-[Coveralls Badge](https://coveralls.io) and 
+Follow the instructions to add a [Travis Badge](https://docs.travis-ci.com/user/status-images/),
+[Coveralls Badge](https://coveralls.io) and
 [CircleCI Badge](https://circleci.com/docs/status-badges) to your repository's
 `README`.
 
