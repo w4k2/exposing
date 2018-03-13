@@ -6,13 +6,13 @@ Plotting Template Classifier
 An example plot of :class:`skltemplate.template.TemplateClassifier`
 """
 import numpy as np
-from skltemplate import TemplateClassifier
+from exposing import Exposer
 from matplotlib import pyplot as plt
 
 
 X = [[0, 0], [1, 1]]
 y = [0, 1]
-clf = TemplateClassifier()
+clf = Exposer(grain=8)
 clf.fit(X, y)
 
 rng = np.random.RandomState(13)
@@ -37,5 +37,7 @@ leg.get_frame().set_alpha(0.5)
 plt.xlabel('Feature 1')
 plt.ylabel('Feature 2')
 plt.xlim([-.5, 1.5])
+
+clf.plot()
 
 plt.show()

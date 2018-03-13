@@ -8,14 +8,19 @@ from sklearn.utils.multiclass import unique_labels
 from sklearn.metrics import euclidean_distances
 from sklearn.preprocessing import MinMaxScaler, LabelEncoder
 from medpy.filter.smoothing import anisotropic_diffusion
-
+import matplotlib.pyplot as plt
+import matplotlib.colors as colors
 
 class Exposer(BaseEstimator, ClassifierMixin):
     """ An example classifier which implements a 1-NN algorithm.
 
     Parameters
     ----------
-    demo_param : str, optional
+    given_subspace : str, optional
+        A parameter used for demonstation of how to pass and store paramters.
+    grain : str, optional
+        A parameter used for demonstation of how to pass and store paramters.
+    a_steps : str, optional
         A parameter used for demonstation of how to pass and store paramters.
 
     Attributes
@@ -24,12 +29,26 @@ class Exposer(BaseEstimator, ClassifierMixin):
         The input passed during :meth:`fit`
     y_ : array, shape = [n_samples]
         The labels passed during :meth:`fit`
+    model_ : array, shape = [grain, grain, n_classes]
+        The labels passed during :meth:`fit`
+    hue_ : array, shape = [grain, grain]
+        The labels passed during :meth:`fit`
+    value_ : array, shape = [grain, grain]
+        The labels passed during :meth:`fit`
+    saturation_ : array, shape = [grain, grain]
+        The labels passed during :meth:`fit`
     """
 
     def __init__(self, given_subspace=None, grain=16, a_steps=5):
         self.given_subspace = given_subspace
         self.grain = grain
         self.a_steps = a_steps
+
+    def rgb(self):
+        check_is_fitted(self, ['X_', 'y_', 'model_'])
+        hsv = np.dstack((self._hue, self._saturation, self._value))
+        rgb = colors.hsv_to_rgb(hsv)
+        return rgb
 
     def fit(self, X, y):
         """A reference implementation of a fitting function for a classifier.
@@ -62,7 +81,6 @@ class Exposer(BaseEstimator, ClassifierMixin):
                 self.subspace_ = np.array((-1,-2))
         else:
             self.subspace_ = np.array(self.given_subspace)
-
 
         # Acquire subspaced X
         subspaced_X = X[:, self.subspace_].astype('float64')
@@ -128,6 +146,8 @@ class Exposer(BaseEstimator, ClassifierMixin):
 
         # Input validation
         X = check_array(X)
+        if X.shape[1] != self.X_.shape[1]:
+            raise ValueError('number of features in testing set does not match training set')
 
         # Input conversion
         subspaced_X = X[:, self.subspace_]
