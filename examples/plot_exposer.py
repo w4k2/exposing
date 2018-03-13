@@ -23,8 +23,6 @@ X_train, X_test, y_train, y_test = \
 estimator = Exposer(a_steps=5, grain = 32)
 estimator.fit(X_train, y_train)
 
-plt.figure(figsize=(10,10))
 plt.imshow(1 - estimator.rgb())
 
 plt.show()
-#plt.savefig('logo.png')
