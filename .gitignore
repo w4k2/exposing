@@ -5,6 +5,7 @@ __pycache__/
 
 # C extensions
 *.so
+.pytest_cache
 
 # scikit-learn specific
 doc/_build/
