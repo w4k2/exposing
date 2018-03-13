@@ -34,7 +34,7 @@ if [[ "$COVERAGE" == "true" ]]; then
     pip install coverage coveralls
 fi
 
-pip install pytest pytest-cov codecov medpy
+pip install pytest pytest-cov codecov medpy matplotlib
 
 python --version
 python -c "import numpy; print('numpy %s' % numpy.__version__)"
