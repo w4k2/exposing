@@ -170,21 +170,21 @@
             
   <h1>Source code for exposing.exposing</h1><div class="highlight"><pre>
 <span></span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">This is a module to be used as a reference for building other modules</span>
+<span class="sd">This is a module to be used as a reference for building other modules.</span>
+<span class="sd">lorem ipsum</span>
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">from</span> <span class="nn">builtins</span> <span class="k">import</span> <span class="nb">range</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">from</span> <span class="nn">sklearn.base</span> <span class="k">import</span> <span class="n">BaseEstimator</span><span class="p">,</span> <span class="n">ClassifierMixin</span><span class="p">,</span> <span class="n">TransformerMixin</span>
+<span class="kn">from</span> <span class="nn">sklearn.base</span> <span class="k">import</span> <span class="n">BaseEstimator</span><span class="p">,</span> <span class="n">ClassifierMixin</span>
 <span class="kn">from</span> <span class="nn">sklearn.utils.validation</span> <span class="k">import</span> <span class="n">check_X_y</span><span class="p">,</span> <span class="n">check_array</span><span class="p">,</span> <span class="n">check_is_fitted</span>
 <span class="kn">from</span> <span class="nn">sklearn.utils.multiclass</span> <span class="k">import</span> <span class="n">unique_labels</span>
-<span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="k">import</span> <span class="n">euclidean_distances</span>
 <span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="k">import</span> <span class="n">MinMaxScaler</span><span class="p">,</span> <span class="n">LabelEncoder</span>
 <span class="kn">from</span> <span class="nn">medpy.filter.smoothing</span> <span class="k">import</span> <span class="n">anisotropic_diffusion</span>
-<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="kn">import</span> <span class="nn">matplotlib.colors</span> <span class="k">as</span> <span class="nn">colors</span>
 
+
 <div class="viewcode-block" id="Exposer"><a class="viewcode-back" href="../../exposing.html#exposing.Exposer">[docs]</a><span class="k">class</span> <span class="nc">Exposer</span><span class="p">(</span><span class="n">BaseEstimator</span><span class="p">,</span> <span class="n">ClassifierMixin</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; An example classifier which implements a 1-NN algorithm.</span>
+    <span class="sd">&quot;&quot;&quot;An example classifier which implements a 1-NN algorithm.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -222,7 +222,7 @@
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        y : array of int of shape = [n_samples]</span>
-<span class="sd">            The label for each sample is the label of the closest sample</span>
+<span class="sd">            The label for each sample is the label of the closest samplecxz cxz</span>
 <span class="sd">            seen udring fit.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">check_is_fitted</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;X_&#39;</span><span class="p">,</span> <span class="s1">&#39;y_&#39;</span><span class="p">,</span> <span class="s1">&#39;model_&#39;</span><span class="p">])</span>
@@ -254,11 +254,11 @@
         <span class="c1"># Last two in subspace when none provided</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">given_subspace</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_features_</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">subspace_</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">))</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">subspace_</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
             <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_features_</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">subspace_</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">subspace_</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">subspace_</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">((</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="o">-</span><span class="mi">2</span><span class="p">))</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">subspace_</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">((</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">))</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">subspace_</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">given_subspace</span><span class="p">)</span>
 
@@ -285,9 +285,10 @@
 
         <span class="c1"># Exposing</span>
         <span class="n">X_locations</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span>
-            <span class="n">np</span><span class="o">.</span><span class="n">rint</span><span class="p">(</span><span class="n">exposing_X</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">grain</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;int64&#39;</span><span class="p">),</span> <span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">grain</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="n">np</span><span class="o">.</span><span class="n">rint</span><span class="p">(</span><span class="n">exposing_X</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">grain</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;int64&#39;</span><span class="p">),</span> <span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">grain</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
         <span class="n">unique</span><span class="p">,</span> <span class="n">counts</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
-            <span class="p">[</span><span class="n">X_locations</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">X_locations</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">exposing_y</span><span class="p">])</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">return_counts</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+            <span class="p">[</span><span class="n">X_locations</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">X_locations</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">exposing_y</span><span class="p">])</span><span class="o">.</span><span class="n">T</span><span class="p">,</span>
+                                   <span class="n">return_counts</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">model_</span><span class="p">[</span><span class="n">unique</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">unique</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">unique</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">]]</span> <span class="o">+=</span> <span class="n">counts</span>
 
         <span class="c1"># Blurring and normalization</span>
@@ -307,8 +308,18 @@
         <span class="c1"># Return the classifier</span></div>
         <span class="k">return</span> <span class="bp">self</span>
 
-<div class="viewcode-block" id="Exposer.predict"><a class="viewcode-back" href="../../exposing.html#exposing.Exposer.predict">[docs]</a>    <span class="k">def</span> <span class="nf">predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; A reference implementation of a prediction for a classifier.</span>
+    <span class="k">def</span> <span class="nf">signatures</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
+        <span class="n">subspaced_X</span> <span class="o">=</span> <span class="n">X</span><span class="p">[:,</span> <span class="bp">self</span><span class="o">.</span><span class="n">subspace_</span><span class="p">]</span>
+        <span class="n">exposing_X</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">scaler_</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">subspaced_X</span><span class="p">)</span>
+        <span class="n">locations</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span>
+            <span class="n">np</span><span class="o">.</span><span class="n">rint</span><span class="p">(</span><span class="n">exposing_X</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">grain</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;int64&#39;</span><span class="p">),</span>
+            <span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">grain</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+
+        <span class="n">supports</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_</span><span class="p">[</span><span class="n">locations</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">locations</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">:]</span>
+        <span class="k">return</span> <span class="n">supports</span>
+
+<div class="viewcode-block" id="Exposer.predict_proba"><a class="viewcode-back" href="../../exposing.html#exposing.Exposer.predict_proba">[docs]</a>    <span class="k">def</span> <span class="nf">predict_proba</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;A reference implementation of a prediction for a classifier.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -327,16 +338,40 @@
         <span class="c1"># Input validation</span>
         <span class="n">X</span> <span class="o">=</span> <span class="n">check_array</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">X_</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;number of features in testing set does not match training set&#39;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;number of features does not match&#39;</span><span class="p">)</span>
 
-        <span class="c1"># Input conversion</span>
-        <span class="n">subspaced_X</span> <span class="o">=</span> <span class="n">X</span><span class="p">[:,</span> <span class="bp">self</span><span class="o">.</span><span class="n">subspace_</span><span class="p">]</span>
-        <span class="n">exposing_X</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">scaler_</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">subspaced_X</span><span class="p">)</span>
-        <span class="n">locations</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span>
-            <span class="n">np</span><span class="o">.</span><span class="n">rint</span><span class="p">(</span><span class="n">exposing_X</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">grain</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;int64&#39;</span><span class="p">),</span> <span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">grain</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="c1"># Signatures to support vectors</span>
+        <span class="n">signatures</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">signatures</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+        <span class="n">sums</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">signatures</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">sums</span><span class="p">[</span><span class="n">sums</span> <span class="o">==</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="n">signatures</span> <span class="o">/=</span> <span class="n">sums</span><span class="p">[:,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span>
+</div>
+        <span class="k">return</span> <span class="n">signatures</span>
 
-        <span class="n">supports</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_</span><span class="p">[</span><span class="n">locations</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">locations</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">:]</span>
-        <span class="n">prediction</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">supports</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<div class="viewcode-block" id="Exposer.predict"><a class="viewcode-back" href="../../exposing.html#exposing.Exposer.predict">[docs]</a>    <span class="k">def</span> <span class="nf">predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;A reference implementation of a prediction for a classifier.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        X : array-like of shape = [n_samples, n_features]</span>
+<span class="sd">            The input samples.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        y : array of int of shape = [n_samples]</span>
+<span class="sd">            The label for each sample is the label of the closest sample</span>
+<span class="sd">            seen udring fit.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Check is fit had been called</span>
+        <span class="n">check_is_fitted</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;X_&#39;</span><span class="p">,</span> <span class="s1">&#39;y_&#39;</span><span class="p">,</span> <span class="s1">&#39;model_&#39;</span><span class="p">])</span>
+
+        <span class="c1"># Input validation</span>
+        <span class="n">X</span> <span class="o">=</span> <span class="n">check_array</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">X_</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;number of features does not match&#39;</span><span class="p">)</span>
+
+        <span class="n">signatures</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">signatures</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+        <span class="n">prediction</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">signatures</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
         <span class="n">decoded_prediction</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">le_</span><span class="o">.</span><span class="n">inverse_transform</span><span class="p">(</span><span class="n">prediction</span><span class="p">)</span>
 </div></div>
         <span class="k">return</span> <span class="n">decoded_prediction</span>
