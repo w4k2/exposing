@@ -1,19 +1,19 @@
 """
-This is a module to be used as a reference for building other modules
+This is a module to be used as a reference for building other modules.
+lorem ipsum
 """
 from builtins import range
 import numpy as np
-from sklearn.base import BaseEstimator, ClassifierMixin, TransformerMixin
+from sklearn.base import BaseEstimator, ClassifierMixin
 from sklearn.utils.validation import check_X_y, check_array, check_is_fitted
 from sklearn.utils.multiclass import unique_labels
-from sklearn.metrics import euclidean_distances
 from sklearn.preprocessing import MinMaxScaler, LabelEncoder
 from medpy.filter.smoothing import anisotropic_diffusion
-import matplotlib.pyplot as plt
 import matplotlib.colors as colors
 
+
 class Exposer(BaseEstimator, ClassifierMixin):
-    """ An example classifier which implements a 1-NN algorithm.
+    """An example classifier which implements a 1-NN algorithm.
 
     Parameters
     ----------
@@ -51,7 +51,7 @@ class Exposer(BaseEstimator, ClassifierMixin):
         Returns
         -------
         y : array of int of shape = [n_samples]
-            The label for each sample is the label of the closest sample
+            The label for each sample is the label of the closest samplecxz cxz
             seen udring fit.
         """
         check_is_fitted(self, ['X_', 'y_', 'model_'])
@@ -83,11 +83,11 @@ class Exposer(BaseEstimator, ClassifierMixin):
         # Last two in subspace when none provided
         if self.given_subspace is None:
             if self.n_features_ == 1:
-                self.subspace_ = np.array((0,0))
+                self.subspace_ = np.array((0, 0))
             elif self.n_features_ == 2:
-                self.subspace_ = np.array((0,1))
+                self.subspace_ = np.array((0, 1))
             else:
-                self.subspace_ = np.array((-1,-2))
+                self.subspace_ = np.array((-1, -2))
         else:
             self.subspace_ = np.array(self.given_subspace)
 
@@ -114,9 +114,10 @@ class Exposer(BaseEstimator, ClassifierMixin):
 
         # Exposing
         X_locations = np.clip(
-            np.rint(exposing_X * self.grain).astype('int64'), 0, self.grain - 1)
+            np.rint(exposing_X * self.grain).astype('int64'), 0, self.grain-1)
         unique, counts = np.unique(np.array(
-            [X_locations[:, 0], X_locations[:, 1], exposing_y]).T, return_counts=True, axis=0)
+            [X_locations[:, 0], X_locations[:, 1], exposing_y]).T,
+                                   return_counts=True, axis=0)
         self.model_[unique[:, 0], unique[:, 1], unique[:, 2]] += counts
 
         # Blurring and normalization
@@ -136,8 +137,18 @@ class Exposer(BaseEstimator, ClassifierMixin):
         # Return the classifier
         return self
 
-    def predict(self, X):
-        """ A reference implementation of a prediction for a classifier.
+    def signatures(self, X):
+        subspaced_X = X[:, self.subspace_]
+        exposing_X = self.scaler_.transform(subspaced_X)
+        locations = np.clip(
+            np.rint(exposing_X * self.grain).astype('int64'),
+            0, self.grain - 1)
+
+        supports = self.model_[locations[:, 0], locations[:, 1], :]
+        return supports
+
+    def predict_proba(self, X):
+        """A reference implementation of a prediction for a classifier.
 
         Parameters
         ----------
@@ -156,16 +167,40 @@ class Exposer(BaseEstimator, ClassifierMixin):
         # Input validation
         X = check_array(X)
         if X.shape[1] != self.X_.shape[1]:
-            raise ValueError('number of features in testing set does not match training set')
+            raise ValueError('number of features does not match')
 
-        # Input conversion
-        subspaced_X = X[:, self.subspace_]
-        exposing_X = self.scaler_.transform(subspaced_X)
-        locations = np.clip(
-            np.rint(exposing_X * self.grain).astype('int64'), 0, self.grain - 1)
+        # Signatures to support vectors
+        signatures = self.signatures(X)
+        sums = np.sum(signatures, axis=1)
+        sums[sums == 0] = 1
+        signatures /= sums[:, np.newaxis]
 
-        supports = self.model_[locations[:, 0], locations[:, 1], :]
-        prediction = np.argmax(supports, axis=1)
+        return signatures
+
+    def predict(self, X):
+        """A reference implementation of a prediction for a classifier.
+
+        Parameters
+        ----------
+        X : array-like of shape = [n_samples, n_features]
+            The input samples.
+
+        Returns
+        -------
+        y : array of int of shape = [n_samples]
+            The label for each sample is the label of the closest sample
+            seen udring fit.
+        """
+        # Check is fit had been called
+        check_is_fitted(self, ['X_', 'y_', 'model_'])
+
+        # Input validation
+        X = check_array(X)
+        if X.shape[1] != self.X_.shape[1]:
+            raise ValueError('number of features does not match')
+
+        signatures = self.signatures(X)
+        prediction = np.argmax(signatures, axis=1)
         decoded_prediction = self.le_.inverse_transform(prediction)
 
         return decoded_prediction
