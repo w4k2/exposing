@@ -51,7 +51,6 @@ class Exposer(BaseEstimator, ClassifierMixin):
         self.X_ = X
         self.y_ = y
         self.n_features_ = X.shape[1]
-        print "\n---\n%i FEATURES" % self.n_features_
 
         # Last two in subspace when none provided
         if self.given_subspace is None:
@@ -64,7 +63,6 @@ class Exposer(BaseEstimator, ClassifierMixin):
         else:
             self.subspace_ = np.array(self.given_subspace)
 
-        print "SUBSPACE %s" % self.subspace_
 
         # Acquire subspaced X
         subspaced_X = X[:, self.subspace_].astype('float64')
@@ -73,10 +71,6 @@ class Exposer(BaseEstimator, ClassifierMixin):
         self.le_ = LabelEncoder()
         self.le_.fit(y)
         self.classes_ = unique_labels(y)
-        print "\nCLASSES"
-        print self.classes_
-        #print self.X_
-        #print self.y_
 
         # Scaler
         self.scaler_ = MinMaxScaler()
@@ -90,8 +84,6 @@ class Exposer(BaseEstimator, ClassifierMixin):
         self.model_ = np.zeros((
             self.grain, self.grain,
             len(self.classes_))).astype('float_')
-        #print "MODEL SHAPING"
-        #print self.model_.shape
 
         # Exposing
         X_locations = np.clip(
@@ -136,33 +128,15 @@ class Exposer(BaseEstimator, ClassifierMixin):
 
         # Input validation
         X = check_array(X)
-        #print "TRYING TO PREDICT"
-        #print X
 
         # Input conversion
         subspaced_X = X[:, self.subspace_]
         exposing_X = self.scaler_.transform(subspaced_X)
         locations = np.clip(
             np.rint(exposing_X * self.grain).astype('int64'), 0, self.grain - 1)
-        #print "GOTTEN LOCATIONS"
-        #print locations
 
         supports = self.model_[locations[:, 0], locations[:, 1], :]
-        #print "ACHIEVED PREDICTION"
         prediction = np.argmax(supports, axis=1)
-        #print prediction
         decoded_prediction = self.le_.inverse_transform(prediction)
-        #print "DECODED PREDICTION"
-        #print decoded_prediction
-        closest = np.argmin(euclidean_distances(X, self.X_), axis=1)
-
-        #print prediction
-        #print self.y_[closest]
-
-        print self.y_
-        print decoded_prediction
-        print np.sum(decoded_prediction == self.y_) / float(len(self.y_))
 
         return decoded_prediction
-
-        #return self.y_[closest]
