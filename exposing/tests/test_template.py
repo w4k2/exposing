@@ -16,4 +16,4 @@ def test_demo():
     estimator = Exposer()
     estimator.fit(X_train, y_train)
     score = estimator.score(X_test, y_test)
-    print score
+    print(score)
