@@ -1,6 +1,7 @@
 """
 This is a module to be used as a reference for building other modules
 """
+from builtins import range
 import numpy as np
 from sklearn.base import BaseEstimator, ClassifierMixin, TransformerMixin
 from sklearn.utils.validation import check_X_y, check_array, check_is_fitted
@@ -119,7 +120,7 @@ class Exposer(BaseEstimator, ClassifierMixin):
         self.model_[unique[:, 0], unique[:, 1], unique[:, 2]] += counts
 
         # Blurring and normalization
-        for layer in xrange(len(self.classes_)):
+        for layer in range(len(self.classes_)):
             plane = self.model_[:, :, layer]
             plane = anisotropic_diffusion(plane, niter=self.a_steps)
             plane /= np.sum(plane)
