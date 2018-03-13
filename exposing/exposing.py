@@ -45,6 +45,14 @@ class Exposer(BaseEstimator, ClassifierMixin):
         self.a_steps = a_steps
 
     def rgb(self):
+        """Returning a HSV to RGB visualisation of fitted exposer.
+
+        Returns
+        -------
+        y : array of int of shape = [n_samples]
+            The label for each sample is the label of the closest sample
+            seen udring fit.
+        """
         check_is_fitted(self, ['X_', 'y_', 'model_'])
         hsv = np.dstack((self._hue, self._saturation, self._value))
         rgb = colors.hsv_to_rgb(hsv)

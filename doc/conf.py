@@ -42,6 +42,7 @@ extensions = [
     'sphinx.ext.doctest',
     'sphinx.ext.intersphinx',
     'sphinx.ext.todo',
+    'sphinx.ext.autosummary',
     'numpydoc',
     'sphinx.ext.ifconfig',
     'sphinx.ext.viewcode',
@@ -79,8 +80,8 @@ plot_gallery = True
 master_doc = 'index'
 
 # General information about the project.
-project = u'sklearn-template'
-copyright = u'2016, Vighnesh Birodkar'
+project = u'exposing'
+copyright = u'2018, Paweł Ksieniewicz'
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
@@ -212,33 +213,33 @@ html_static_path = ['_static']
 #html_file_suffix = None
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = 'project-templatedoc'
+htmlhelp_basename = 'exposingdoc'
 
 
 # -- Options for LaTeX output ---------------------------------------------
 
 latex_elements = {
 # The paper size ('letterpaper' or 'a4paper').
-#'papersize': 'letterpaper',
+'papersize': 'letterpaper',
 
 # The font size ('10pt', '11pt' or '12pt').
-#'pointsize': '10pt',
+'pointsize': '12pt',
 
 # Additional stuff for the LaTeX preamble.
-#'preamble': '',
+#'preamble': 'Important stuff.',
 }
 
 # Grouping the document tree into LaTeX files. List of tuples
 # (source start file, target name, title,
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
-  ('index', 'project-template.tex', u'project-template Documentation',
-   u'Vighnesh Birodkar', 'manual'),
+  ('index', 'exposing_docs.tex', u'Exposing Documentation',
+   u'Paweł Ksieniewicz', 'manual'),
 ]
 
 # The name of an image file (relative to this directory) to place at the top of
 # the title page.
-#latex_logo = None
+latex_logo = 'logo.png'
 
 # For "manual" documents, if this is true, then toplevel headings are parts,
 # not chapters.
@@ -262,8 +263,8 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    ('index', 'project-template', u'project-template Documentation',
-     [u'Vighnesh Birodkar'], 1)
+    ('index', 'exposing', u'exposing Documentation',
+     [u'Paweł Ksieniewicz'], 1)
 ]
 
 # If true, show URL addresses after external links.
@@ -276,8 +277,8 @@ man_pages = [
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-  ('index', 'project-template', u'project-template Documentation',
-   u'Vighnesh Birodkar', 'project-template', 'One line description of project.',
+  ('index', 'exposing', u'exposing Documentation',
+   u'Paweł Ksieniewicz', 'exposing', 'One line description of project.',
    'Miscellaneous'),
 ]
 
