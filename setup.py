@@ -20,7 +20,7 @@ except ImportError:
 setup(name='exposing',
       version='0.1.0',
       description='A template for scikit-learn compatible packages',
-      author='Paweł Ksieniewicz',
+      author='Pawel Ksieniewicz',
       packages=find_packages(),
       install_requires=INSTALL_REQUIRES,
       author_email='pawel.ksieniewicz@pwr.edu.pl',
