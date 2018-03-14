@@ -308,14 +308,16 @@
         <span class="c1"># Return the classifier</span></div>
         <span class="k">return</span> <span class="bp">self</span>
 
-    <span class="k">def</span> <span class="nf">signatures</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
+<div class="viewcode-block" id="Exposer.signatures"><a class="viewcode-back" href="../../exposing.html#exposing.Exposer.signatures">[docs]</a>    <span class="k">def</span> <span class="nf">signatures</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Returning signatures corresponding to given samples from exposed model</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">subspaced_X</span> <span class="o">=</span> <span class="n">X</span><span class="p">[:,</span> <span class="bp">self</span><span class="o">.</span><span class="n">subspace_</span><span class="p">]</span>
         <span class="n">exposing_X</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">scaler_</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">subspaced_X</span><span class="p">)</span>
         <span class="n">locations</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span>
             <span class="n">np</span><span class="o">.</span><span class="n">rint</span><span class="p">(</span><span class="n">exposing_X</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">grain</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;int64&#39;</span><span class="p">),</span>
             <span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">grain</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
 
-        <span class="n">supports</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_</span><span class="p">[</span><span class="n">locations</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">locations</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">:]</span>
+        <span class="n">supports</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_</span><span class="p">[</span><span class="n">locations</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">locations</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">:]</span></div>
         <span class="k">return</span> <span class="n">supports</span>
 
 <div class="viewcode-block" id="Exposer.predict_proba"><a class="viewcode-back" href="../../exposing.html#exposing.Exposer.predict_proba">[docs]</a>    <span class="k">def</span> <span class="nf">predict_proba</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
