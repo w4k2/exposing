@@ -138,6 +138,8 @@ class Exposer(BaseEstimator, ClassifierMixin):
         return self
 
     def signatures(self, X):
+        """Returning signatures corresponding to given samples from exposed model
+        """
         subspaced_X = X[:, self.subspace_]
         exposing_X = self.scaler_.transform(subspaced_X)
         locations = np.clip(
