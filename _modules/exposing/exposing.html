@@ -170,8 +170,8 @@
             
   <h1>Source code for exposing.exposing</h1><div class="highlight"><pre>
 <span></span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">This is a module to be used as a reference for building other modules.</span>
-<span class="sd">lorem ipsum</span>
+<span class="sd">This is exposing module, which contains classes of planar exposer and ensemble</span>
+<span class="sd">of them</span>
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">from</span> <span class="nn">builtins</span> <span class="k">import</span> <span class="nb">range</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
@@ -184,7 +184,7 @@
 
 
 <div class="viewcode-block" id="Exposer"><a class="viewcode-back" href="../../exposing.html#exposing.Exposer">[docs]</a><span class="k">class</span> <span class="nc">Exposer</span><span class="p">(</span><span class="n">BaseEstimator</span><span class="p">,</span> <span class="n">ClassifierMixin</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;An example classifier which implements a 1-NN algorithm.</span>
+    <span class="sd">&quot;&quot;&quot;A classifier using basic, planar exposer.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -217,13 +217,13 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">a_steps</span> <span class="o">=</span> <span class="n">a_steps</span>
 
 <div class="viewcode-block" id="Exposer.rgb"><a class="viewcode-back" href="../../exposing.html#exposing.Exposer.rgb">[docs]</a>    <span class="k">def</span> <span class="nf">rgb</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Returning a HSV to RGB visualisation of fitted exposer.</span>
+        <span class="sd">&quot;&quot;&quot;Returning a HSV to RGB visualization of fitted exposer.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        y : array of int of shape = [n_samples]</span>
-<span class="sd">            The label for each sample is the label of the closest samplecxz cxz</span>
-<span class="sd">            seen udring fit.</span>
+<span class="sd">            The label for each sample is the label of the closest sample seen</span>
+<span class="sd">             during fit.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">check_is_fitted</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;X_&#39;</span><span class="p">,</span> <span class="s1">&#39;y_&#39;</span><span class="p">,</span> <span class="s1">&#39;model_&#39;</span><span class="p">])</span>
         <span class="n">hsv</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dstack</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">_hue</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_saturation</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_value</span><span class="p">))</span>
@@ -231,7 +231,7 @@
         <span class="k">return</span> <span class="n">rgb</span>
 
 <div class="viewcode-block" id="Exposer.fit"><a class="viewcode-back" href="../../exposing.html#exposing.Exposer.fit">[docs]</a>    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;A reference implementation of a fitting function for a classifier.</span>
+        <span class="sd">&quot;&quot;&quot;A fitting function for a classifier.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -275,7 +275,6 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">scaler_</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">subspaced_X</span><span class="p">)</span>
 
         <span class="c1"># Exposing versions of X and y</span>
-        <span class="n">exposing_X</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">scaler_</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">subspaced_X</span><span class="p">)</span>
         <span class="n">exposing_y</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">le_</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
 
         <span class="c1"># Empty model</span>
@@ -284,8 +283,7 @@
             <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">classes_</span><span class="p">)))</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;float_&#39;</span><span class="p">)</span>
 
         <span class="c1"># Exposing</span>
-        <span class="n">X_locations</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span>
-            <span class="n">np</span><span class="o">.</span><span class="n">rint</span><span class="p">(</span><span class="n">exposing_X</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">grain</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;int64&#39;</span><span class="p">),</span> <span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">grain</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">X_locations</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">locations</span><span class="p">(</span><span class="n">subspaced_X</span><span class="p">)</span>
         <span class="n">unique</span><span class="p">,</span> <span class="n">counts</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
             <span class="p">[</span><span class="n">X_locations</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">X_locations</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">exposing_y</span><span class="p">])</span><span class="o">.</span><span class="n">T</span><span class="p">,</span>
                                    <span class="n">return_counts</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
@@ -308,15 +306,42 @@
         <span class="c1"># Return the classifier</span></div>
         <span class="k">return</span> <span class="bp">self</span>
 
+<div class="viewcode-block" id="Exposer.locations"><a class="viewcode-back" href="../../exposing.html#exposing.Exposer.locations">[docs]</a>    <span class="k">def</span> <span class="nf">locations</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">subsamples</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Returning indices of exposer corresponding to given subsamples.</span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        subsamples : array-like, shape = [n_samples, n_features]</span>
+<span class="sd">            The training input samples.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        locations : array-like</span>
+<span class="sd">            Indices for given samples</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">transformed_subsamples</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">scaler_</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">subsamples</span><span class="p">)</span>
+        <span class="n">locations</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span>
+            <span class="n">np</span><span class="o">.</span><span class="n">rint</span><span class="p">(</span><span class="n">transformed_subsamples</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">grain</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;int64&#39;</span><span class="p">),</span>
+            <span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">grain</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="n">locations</span>
+
 <div class="viewcode-block" id="Exposer.signatures"><a class="viewcode-back" href="../../exposing.html#exposing.Exposer.signatures">[docs]</a>    <span class="k">def</span> <span class="nf">signatures</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Returning signatures corresponding to given samples from exposed model</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        X : array-like, shape = [n_samples, n_features]</span>
+<span class="sd">            The training input samples.</span>
+<span class="sd">        y : array-like, shape = [n_samples]</span>
+<span class="sd">            The target values. An array of int.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        self : object</span>
+<span class="sd">            Returns self.</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">subspaced_X</span> <span class="o">=</span> <span class="n">X</span><span class="p">[:,</span> <span class="bp">self</span><span class="o">.</span><span class="n">subspace_</span><span class="p">]</span>
-        <span class="n">exposing_X</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">scaler_</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">subspaced_X</span><span class="p">)</span>
-        <span class="n">locations</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span>
-            <span class="n">np</span><span class="o">.</span><span class="n">rint</span><span class="p">(</span><span class="n">exposing_X</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">grain</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;int64&#39;</span><span class="p">),</span>
-            <span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">grain</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
-
+        <span class="n">locations</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">locations</span><span class="p">(</span><span class="n">subspaced_X</span><span class="p">)</span>
         <span class="n">supports</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_</span><span class="p">[</span><span class="n">locations</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">locations</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">:]</span></div>
         <span class="k">return</span> <span class="n">supports</span>
 
