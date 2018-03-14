@@ -6,28 +6,24 @@ import warnings
 
 from exposing import Exposer
 
-def test_demo():
+def dataset():
     n_samples = 1000
     ds = make_circles(noise=0.2, factor=0.5, random_state=1, n_samples=n_samples)
     ds = make_moons(noise=0.3, random_state=0, n_samples=n_samples)
     X, y = ds
-    X_train, X_test, y_train, y_test = \
-        train_test_split(X, y, test_size=.4, random_state=42)
+    return train_test_split(X, y, test_size=.4, random_state=42)
 
-    estimator = Exposer()
+
+def test_given_subspace():
+    X_train, X_test, y_train, y_test = dataset()
+    estimator = Exposer(given_subspace=(0, 1))
     estimator.fit(X_train, y_train)
     score = estimator.score(X_test, y_test)
     warnings.warn("Accuracy = %.3f" % score)
 
 
 def test_rgb():
-    n_samples = 1000
-    ds = make_circles(noise=0.2, factor=0.5, random_state=1, n_samples=n_samples)
-    ds = make_moons(noise=0.3, random_state=0, n_samples=n_samples)
-    X, y = ds
-    X_train, X_test, y_train, y_test = \
-        train_test_split(X, y, test_size=.4, random_state=42)
-
+    X_train, X_test, y_train, y_test = dataset()
     estimator = Exposer()
     estimator.fit(X_train, y_train)
     rgb = estimator.rgb()
