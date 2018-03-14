@@ -1,6 +1,6 @@
 """
-This is a module to be used as a reference for building other modules.
-lorem ipsum
+This is exposing module, which contains classes of planar exposer and ensemble
+of them
 """
 from builtins import range
 import numpy as np
@@ -13,7 +13,7 @@ import matplotlib.colors as colors
 
 
 class Exposer(BaseEstimator, ClassifierMixin):
-    """An example classifier which implements a 1-NN algorithm.
+    """A classifier using basic, planar exposer.
 
     Parameters
     ----------
@@ -46,13 +46,13 @@ class Exposer(BaseEstimator, ClassifierMixin):
         self.a_steps = a_steps
 
     def rgb(self):
-        """Returning a HSV to RGB visualisation of fitted exposer.
+        """Returning a HSV to RGB visualization of fitted exposer.
 
         Returns
         -------
         y : array of int of shape = [n_samples]
-            The label for each sample is the label of the closest samplecxz cxz
-            seen udring fit.
+            The label for each sample is the label of the closest sample seen
+             during fit.
         """
         check_is_fitted(self, ['X_', 'y_', 'model_'])
         hsv = np.dstack((self._hue, self._saturation, self._value))
@@ -60,7 +60,7 @@ class Exposer(BaseEstimator, ClassifierMixin):
         return rgb
 
     def fit(self, X, y):
-        """A reference implementation of a fitting function for a classifier.
+        """A fitting function for a classifier.
 
         Parameters
         ----------
@@ -104,7 +104,6 @@ class Exposer(BaseEstimator, ClassifierMixin):
         self.scaler_.fit(subspaced_X)
 
         # Exposing versions of X and y
-        exposing_X = self.scaler_.transform(subspaced_X)
         exposing_y = self.le_.transform(y)
 
         # Empty model
@@ -113,8 +112,7 @@ class Exposer(BaseEstimator, ClassifierMixin):
             len(self.classes_))).astype('float_')
 
         # Exposing
-        X_locations = np.clip(
-            np.rint(exposing_X * self.grain).astype('int64'), 0, self.grain-1)
+        X_locations = self.locations(subspaced_X)
         unique, counts = np.unique(np.array(
             [X_locations[:, 0], X_locations[:, 1], exposing_y]).T,
                                    return_counts=True, axis=0)
@@ -137,15 +135,42 @@ class Exposer(BaseEstimator, ClassifierMixin):
         # Return the classifier
         return self
 
+    def locations(self, subsamples):
+        """Returning indices of exposer corresponding to given subsamples.
+        Parameters
+        ----------
+        subsamples : array-like, shape = [n_samples, n_features]
+            The training input samples.
+
+        Returns
+        -------
+        locations : array-like
+            Indices for given samples
+        """
+        transformed_subsamples = self.scaler_.transform(subsamples)
+        locations = np.clip(
+            np.rint(transformed_subsamples * self.grain).astype('int64'),
+            0, self.grain - 1)
+        return locations
+
     def signatures(self, X):
         """Returning signatures corresponding to given samples from exposed model
+
+        Parameters
+        ----------
+        X : array-like, shape = [n_samples, n_features]
+            The training input samples.
+        y : array-like, shape = [n_samples]
+            The target values. An array of int.
+
+        Returns
+        -------
+        self : object
+            Returns self.
+
         """
         subspaced_X = X[:, self.subspace_]
-        exposing_X = self.scaler_.transform(subspaced_X)
-        locations = np.clip(
-            np.rint(exposing_X * self.grain).astype('int64'),
-            0, self.grain - 1)
-
+        locations = self.locations(subspaced_X)
         supports = self.model_[locations[:, 0], locations[:, 1], :]
         return supports
 
