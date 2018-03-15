@@ -216,6 +216,30 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">grain</span> <span class="o">=</span> <span class="n">grain</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">a_steps</span> <span class="o">=</span> <span class="n">a_steps</span>
 
+<div class="viewcode-block" id="Exposer.model"><a class="viewcode-back" href="../../exposing.html#exposing.Exposer.model">[docs]</a>    <span class="k">def</span> <span class="nf">model</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Returning a model of fitted exposer.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        y : array of int of shape = [n_samples]</span>
+<span class="sd">            The label for each sample is the label of the closest sample seen</span>
+<span class="sd">             during fit.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">check_is_fitted</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;X_&#39;</span><span class="p">,</span> <span class="s1">&#39;y_&#39;</span><span class="p">,</span> <span class="s1">&#39;model_&#39;</span><span class="p">])</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_</span>
+
+<div class="viewcode-block" id="Exposer.hsv"><a class="viewcode-back" href="../../exposing.html#exposing.Exposer.hsv">[docs]</a>    <span class="k">def</span> <span class="nf">hsv</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Returning a HSV representation of fitted exposer.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        y : array of int of shape = [n_samples]</span>
+<span class="sd">            The label for each sample is the label of the closest sample seen</span>
+<span class="sd">             during fit.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">check_is_fitted</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;X_&#39;</span><span class="p">,</span> <span class="s1">&#39;y_&#39;</span><span class="p">,</span> <span class="s1">&#39;model_&#39;</span><span class="p">])</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_hsv</span>
+
 <div class="viewcode-block" id="Exposer.rgb"><a class="viewcode-back" href="../../exposing.html#exposing.Exposer.rgb">[docs]</a>    <span class="k">def</span> <span class="nf">rgb</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Returning a HSV to RGB visualization of fitted exposer.</span>
 
@@ -226,8 +250,7 @@
 <span class="sd">             during fit.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">check_is_fitted</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;X_&#39;</span><span class="p">,</span> <span class="s1">&#39;y_&#39;</span><span class="p">,</span> <span class="s1">&#39;model_&#39;</span><span class="p">])</span>
-        <span class="n">hsv</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dstack</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">_hue</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_saturation</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_value</span><span class="p">))</span>
-        <span class="n">rgb</span> <span class="o">=</span> <span class="n">colors</span><span class="o">.</span><span class="n">hsv_to_rgb</span><span class="p">(</span><span class="n">hsv</span><span class="p">)</span></div>
+        <span class="n">rgb</span> <span class="o">=</span> <span class="n">colors</span><span class="o">.</span><span class="n">hsv_to_rgb</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_hsv</span><span class="p">)</span></div>
         <span class="k">return</span> <span class="n">rgb</span>
 
 <div class="viewcode-block" id="Exposer.fit"><a class="viewcode-back" href="../../exposing.html#exposing.Exposer.fit">[docs]</a>    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
@@ -297,11 +320,14 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">model_</span><span class="p">[:,</span> <span class="p">:,</span> <span class="n">layer</span><span class="p">]</span> <span class="o">=</span> <span class="n">plane</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">model_</span> <span class="o">/=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model_</span><span class="p">)</span>
 
+        <span class="c1"># Calculate measures</span>
+
         <span class="c1"># HSV</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_hue</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model_</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="nb">float</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">classes_</span><span class="p">))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_saturation</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model_</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span> <span class="o">-</span> \
             <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model_</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_value</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model_</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_hsv</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dstack</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">_hue</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_saturation</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_value</span><span class="p">))</span>
 
         <span class="c1"># Return the classifier</span></div>
         <span class="k">return</span> <span class="bp">self</span>

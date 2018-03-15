@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Showing Exposition of planar Exposer &mdash; exposing 0.1.0 documentation</title>
+  <title>Showing colorspace parameters of planar Exposer &mdash; exposing 0.1.0 documentation</title>
   
 
   
@@ -41,8 +41,8 @@
         <link rel="search" title="Search" href="../search.html"/>
     <link rel="top" title="exposing 0.1.0 documentation" href="../index.html"/>
         <link rel="up" title="General examples" href="index.html"/>
-        <link rel="next" title="Influence of hyperparameters" href="plot_hyperparameters.html"/>
-        <link rel="prev" title="General examples" href="index.html"/> 
+        <link rel="next" title="Comparing classifiers on three synthetic datasets" href="compare_classifiers.html"/>
+        <link rel="prev" title="Influence of hyperparameters" href="plot_hyperparameters.html"/> 
 
   
   <script src="../_static/js/modernizr.min.js"></script>
@@ -103,8 +103,8 @@
 <p class="caption"><span class="caption-text">Tutorial - Examples</span></p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">General examples</a><ul class="current">
-<li class="toctree-l2 current"><a class="current reference internal" href="#">Showing Exposition of planar Exposer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_hyperparameters.html">Influence of hyperparameters</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Showing colorspace parameters of planar Exposer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="compare_classifiers.html">Comparing classifiers on three synthetic datasets</a></li>
 </ul>
 </li>
@@ -158,7 +158,7 @@
         
           <li><a href="index.html">General examples</a> &raquo;</li>
         
-      <li>Showing Exposition of planar Exposer</li>
+      <li>Showing colorspace parameters of planar Exposer</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -177,8 +177,8 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="showing-exposition-of-planar-exposer">
-<span id="sphx-glr-auto-examples-plot-exposer-py"></span><h1>Showing Exposition of planar Exposer<a class="headerlink" href="#showing-exposition-of-planar-exposer" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="showing-colorspace-parameters-of-planar-exposer">
+<span id="sphx-glr-auto-examples-plot-exposer-py"></span><h1>Showing colorspace parameters of planar Exposer<a class="headerlink" href="#showing-colorspace-parameters-of-planar-exposer" title="Permalink to this headline">¶</a></h1>
 <p>An example plot of <code class="xref py py-class docutils literal notranslate"><span class="pre">skltemplate.template.TemplateClassifier</span></code></p>
 <img alt="../_images/sphx_glr_plot_exposer_001.png" class="align-center" src="../_images/sphx_glr_plot_exposer_001.png" />
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
@@ -196,15 +196,37 @@
 <span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> \
     <span class="n">train_test_split</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=.</span><span class="mi">4</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
 
-<span class="n">estimator</span> <span class="o">=</span> <span class="n">Exposer</span><span class="p">(</span><span class="n">a_steps</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">grain</span><span class="o">=</span><span class="mi">32</span><span class="p">)</span>
-<span class="n">estimator</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+<span class="n">clf</span> <span class="o">=</span> <span class="n">Exposer</span><span class="p">(</span><span class="n">a_steps</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">grain</span><span class="o">=</span><span class="mi">32</span><span class="p">)</span>
+<span class="n">clf</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
 
-<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">estimator</span><span class="o">.</span><span class="n">rgb</span><span class="p">())</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">axs</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">9</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
 
+
+<span class="n">model</span> <span class="o">=</span> <span class="n">clf</span><span class="o">.</span><span class="n">model</span><span class="p">()</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">model</span><span class="p">[:,</span> <span class="p">:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;gray&#39;</span><span class="p">)</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Negative class&quot;</span><span class="p">)</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">model</span><span class="p">[:,</span> <span class="p">:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;gray&#39;</span><span class="p">)</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Positive class&quot;</span><span class="p">)</span>
+
+<span class="n">rgb</span> <span class="o">=</span> <span class="n">clf</span><span class="o">.</span><span class="n">rgb</span><span class="p">()</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">rgb</span><span class="p">)</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;RGB visualization&#39;</span><span class="p">)</span>
+
+<span class="n">hsv</span> <span class="o">=</span> <span class="n">clf</span><span class="o">.</span><span class="n">hsv</span><span class="p">()</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">hsv</span><span class="p">[:,</span> <span class="p">:,</span> <span class="mi">0</span><span class="p">])</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Hue&#39;</span><span class="p">)</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">hsv</span><span class="p">[:,</span> <span class="p">:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;gray&#39;</span><span class="p">)</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Saturation&#39;</span><span class="p">)</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">hsv</span><span class="p">[:,</span> <span class="p">:,</span> <span class="mi">2</span><span class="p">],</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;gray&#39;</span><span class="p">)</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Value&#39;</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">ax</span> <span class="ow">in</span> <span class="n">axs</span><span class="p">:</span>
+    <span class="k">for</span> <span class="n">axx</span> <span class="ow">in</span> <span class="n">ax</span><span class="p">:</span>
+        <span class="n">axx</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">&#39;off&#39;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
-<p><strong>Total running time of the script:</strong> ( 0 minutes  0.311 seconds)</p>
+<p><strong>Total running time of the script:</strong> ( 0 minutes  0.087 seconds)</p>
 <div class="sphx-glr-footer docutils container">
 <div class="sphx-glr-download docutils container">
 <a class="reference download internal" href="../_downloads/plot_exposer.py" download=""><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_exposer.py</span></code></a></div>
@@ -224,10 +246,10 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="plot_hyperparameters.html" class="btn btn-neutral float-right" title="Influence of hyperparameters" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="compare_classifiers.html" class="btn btn-neutral float-right" title="Comparing classifiers on three synthetic datasets" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="index.html" class="btn btn-neutral" title="General examples" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="plot_hyperparameters.html" class="btn btn-neutral" title="Influence of hyperparameters" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
