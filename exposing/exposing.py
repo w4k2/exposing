@@ -137,6 +137,7 @@ class Exposer(BaseEstimator, ClassifierMixin):
 
     def locations(self, subsamples):
         """Returning indices of exposer corresponding to given subsamples.
+
         Parameters
         ----------
         subsamples : array-like, shape = [n_samples, n_features]
