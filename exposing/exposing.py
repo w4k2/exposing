@@ -45,6 +45,30 @@ class Exposer(BaseEstimator, ClassifierMixin):
         self.grain = grain
         self.a_steps = a_steps
 
+    def model(self):
+        """Returning a model of fitted exposer.
+
+        Returns
+        -------
+        y : array of int of shape = [n_samples]
+            The label for each sample is the label of the closest sample seen
+             during fit.
+        """
+        check_is_fitted(self, ['X_', 'y_', 'model_'])
+        return self.model_
+
+    def hsv(self):
+        """Returning a HSV representation of fitted exposer.
+
+        Returns
+        -------
+        y : array of int of shape = [n_samples]
+            The label for each sample is the label of the closest sample seen
+             during fit.
+        """
+        check_is_fitted(self, ['X_', 'y_', 'model_'])
+        return self._hsv
+
     def rgb(self):
         """Returning a HSV to RGB visualization of fitted exposer.
 
@@ -55,8 +79,7 @@ class Exposer(BaseEstimator, ClassifierMixin):
              during fit.
         """
         check_is_fitted(self, ['X_', 'y_', 'model_'])
-        hsv = np.dstack((self._hue, self._saturation, self._value))
-        rgb = colors.hsv_to_rgb(hsv)
+        rgb = colors.hsv_to_rgb(self._hsv)
         return rgb
 
     def fit(self, X, y):
@@ -126,11 +149,14 @@ class Exposer(BaseEstimator, ClassifierMixin):
             self.model_[:, :, layer] = plane
         self.model_ /= np.max(self.model_)
 
+        # Calculate measures
+
         # HSV
         self._hue = np.argmax(self.model_, axis=2) / float(len(self.classes_))
         self._saturation = np.max(self.model_, axis=2) - \
             np.min(self.model_, axis=2)
         self._value = np.max(self.model_, axis=2)
+        self._hsv = np.dstack((self._hue, self._saturation, self._value))
 
         # Return the classifier
         return self
