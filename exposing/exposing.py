@@ -7,6 +7,7 @@ import numpy as np
 from sklearn.base import BaseEstimator, ClassifierMixin
 from sklearn.utils.validation import check_X_y, check_array, check_is_fitted
 from sklearn.utils.multiclass import unique_labels
+from sklearn.utils.random import sample_without_replacement
 from sklearn.preprocessing import MinMaxScaler, LabelEncoder
 from medpy.filter.smoothing import anisotropic_diffusion
 import matplotlib.colors as colors
@@ -16,15 +17,68 @@ APPROACHES = ('brutal', 'random', 'heuristic')
 
 
 class EE(BaseEstimator, ClassifierMixin):
-    def __init__(self, given_subspace=None, grain=16, a_steps=5):
-        warnings.warn("ECE INIT")
-        self.given_subspace = given_subspace
+    def __init__(self, grain=16, a_steps=5, n_base=15, approach='random'):
         self.grain = grain
         self.a_steps = a_steps
+        self.n_base = n_base
+        self.approach = approach
 
     def fit(self, X, y):
+        X, y = check_X_y(X, y)
+        self.X_ = X
+        self.y_ = y
+        self.n_features_ = X.shape[1]
+
+        # Store the classes seen during fit
+        self.le_ = LabelEncoder()
+        self.le_.fit(y)
+        self.classes_ = unique_labels(y)
+
+        # Establish set of subspaces
+        self.subspaces_ = None
+        if self.approach == 'brutal':
+            pass
+        elif self.approach == 'random':
+            self.subspaces_ = [sample_without_replacement(self.n_features_, 2)
+                               for i in range(self.n_base)]
+        elif self.approach == 'heuristic':
+            pass
+
+        # Compose ensemble
+        self.ensemble_ = [Exposer(grain=self.grain,
+                                  a_steps=self.a_steps,
+                                  given_subspace=subspace)
+                          for subspace in self.subspaces_]
+
+        # Fit ensemble
+        [clf.fit(X, y) for clf in self.ensemble_]
+
+        # Gather thetas
+        self.thetas_ = np.array([clf.theta_ for clf in self.ensemble_])
+
         # Return the classifier
         return self
+
+    def predict(self, X):
+        # Check is fit had been called
+        check_is_fitted(self, ['X_', 'y_', 'ensemble_'])
+
+        # Input validation
+        X = check_array(X)
+        if X.shape[1] != self.X_.shape[1]:
+            raise ValueError('number of features does not match')
+
+        # Establish signatures
+        ensemble_signatures = [clf.signatures(X) for clf in self.ensemble_]
+
+        # Acquire supports
+        supports = np.sum(ensemble_signatures, axis=0)
+
+        # Predict and decode prediction
+        prediction = np.argmax(supports, axis=1)
+        decoded_prediction = self.le_.inverse_transform(prediction)
+
+        return decoded_prediction
 
 
 class Exposer(BaseEstimator, ClassifierMixin):

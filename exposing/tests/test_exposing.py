@@ -1,6 +1,6 @@
 import numpy as np
 from numpy.testing import assert_almost_equal
-from sklearn.datasets import make_circles, make_moons
+from sklearn.datasets import make_circles, make_moons, load_breast_cancer
 from sklearn.model_selection import train_test_split
 import warnings
 
@@ -14,12 +14,17 @@ def dataset():
     return train_test_split(X, y, test_size=.4, random_state=42)
 
 
+def breast_dataset():
+    X, y = load_breast_cancer(return_X_y=True)
+    return train_test_split(X, y, test_size=.4, random_state=42)
+
+
 def test_given_subspace():
     X_train, X_test, y_train, y_test = dataset()
     estimator = Exposer(given_subspace=(0, 1))
     estimator.fit(X_train, y_train)
     score = estimator.score(X_test, y_test)
-    warnings.warn("Accuracy = %.3f" % score)
+    warnings.warn("Exposer accuracy = %.3f" % score)
 
 
 def test_rgb():
@@ -30,6 +35,8 @@ def test_rgb():
 
 
 def test_ece():
-    X_train, X_test, y_train, y_test = dataset()
+    X_train, X_test, y_train, y_test = breast_dataset()
     estimator = EE()
     estimator.fit(X_train, y_train)
+    score = estimator.score(X_test, y_test)
+    warnings.warn("EE accuracy = %.3f" % score)
