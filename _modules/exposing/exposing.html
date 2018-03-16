@@ -181,12 +181,21 @@
 <span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="k">import</span> <span class="n">MinMaxScaler</span><span class="p">,</span> <span class="n">LabelEncoder</span>
 <span class="kn">from</span> <span class="nn">medpy.filter.smoothing</span> <span class="k">import</span> <span class="n">anisotropic_diffusion</span>
 <span class="kn">import</span> <span class="nn">matplotlib.colors</span> <span class="k">as</span> <span class="nn">colors</span>
+<span class="kn">import</span> <span class="nn">warnings</span>
 
 <span class="n">APPROACHES</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;brutal&#39;</span><span class="p">,</span> <span class="s1">&#39;random&#39;</span><span class="p">,</span> <span class="s1">&#39;heuristic&#39;</span><span class="p">)</span>
 
 
-<span class="k">class</span> <span class="nc">ECE</span><span class="p">(</span><span class="n">BaseEstimator</span><span class="p">,</span> <span class="n">ClassifierMixin</span><span class="p">):</span>
-    <span class="k">pass</span>
+<div class="viewcode-block" id="EE"><a class="viewcode-back" href="../../exposing.html#exposing.EE">[docs]</a><span class="k">class</span> <span class="nc">EE</span><span class="p">(</span><span class="n">BaseEstimator</span><span class="p">,</span> <span class="n">ClassifierMixin</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">given_subspace</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">grain</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">a_steps</span><span class="o">=</span><span class="mi">5</span><span class="p">):</span>
+        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s2">&quot;ECE INIT&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">given_subspace</span> <span class="o">=</span> <span class="n">given_subspace</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">grain</span> <span class="o">=</span> <span class="n">grain</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">a_steps</span> <span class="o">=</span> <span class="n">a_steps</span>
+
+    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+        <span class="c1"># Return the classifier</span></div>
+        <span class="k">return</span> <span class="bp">self</span>
 
 
 <div class="viewcode-block" id="Exposer"><a class="viewcode-back" href="../../exposing.html#exposing.Exposer">[docs]</a><span class="k">class</span> <span class="nc">Exposer</span><span class="p">(</span><span class="n">BaseEstimator</span><span class="p">,</span> <span class="n">ClassifierMixin</span><span class="p">):</span>
