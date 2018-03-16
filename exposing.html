@@ -189,16 +189,16 @@
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>given_subspace</strong> : tuple, optional, shape = [2]</p>
 <blockquote>
-<div><p>Indices of dataset subspace used to calculate exposer.
-If none given, last two features are used.</p>
+<div><p>Indices of dataset subspace used to calculate exposer. (the default is
+usage of last two features).</p>
 </div></blockquote>
 <p><strong>grain</strong> : int, optional</p>
 <blockquote>
-<div><p>A parameter used for demonstation of how to pass and store paramters.</p>
+<div><p>Number of bins dividing every dimension (the default is <cite>16</cite>).</p>
 </div></blockquote>
 <p><strong>a_steps</strong> : int, optional</p>
 <blockquote class="last">
-<div><p>A parameter used for demonstation of how to pass and store paramters.</p>
+<div><p>Number of steps of anisotropic diffusion (the default is <cite>5</cite>).</p>
 </div></blockquote>
 </td>
 </tr>
@@ -207,8 +207,8 @@ If none given, last two features are used.</p>
 <p class="rubric">Attributes</p>
 <table border="1" class="docutils">
 <colgroup>
-<col width="16%" />
-<col width="84%" />
+<col width="7%" />
+<col width="93%" />
 </colgroup>
 <tbody valign="top">
 <tr class="row-odd"><td><strong>X_</strong></td>
@@ -216,18 +216,6 @@ If none given, last two features are used.</p>
 </tr>
 <tr class="row-even"><td><strong>y_</strong></td>
 <td>(array, shape = [n_samples]) The labels passed during <a class="reference internal" href="#exposing.Exposer.fit" title="exposing.Exposer.fit"><code class="xref py py-meth docutils literal notranslate"><span class="pre">fit()</span></code></a></td>
-</tr>
-<tr class="row-odd"><td><strong>model_</strong></td>
-<td>(array, shape = [grain, grain, n_classes]) The labels passed during <a class="reference internal" href="#exposing.Exposer.fit" title="exposing.Exposer.fit"><code class="xref py py-meth docutils literal notranslate"><span class="pre">fit()</span></code></a></td>
-</tr>
-<tr class="row-even"><td><strong>hue_</strong></td>
-<td>(array, shape = [grain, grain]) The labels passed during <a class="reference internal" href="#exposing.Exposer.fit" title="exposing.Exposer.fit"><code class="xref py py-meth docutils literal notranslate"><span class="pre">fit()</span></code></a></td>
-</tr>
-<tr class="row-odd"><td><strong>value_</strong></td>
-<td>(array, shape = [grain, grain]) The labels passed during <a class="reference internal" href="#exposing.Exposer.fit" title="exposing.Exposer.fit"><code class="xref py py-meth docutils literal notranslate"><span class="pre">fit()</span></code></a></td>
-</tr>
-<tr class="row-even"><td><strong>saturation_</strong></td>
-<td>(array, shape = [grain, grain]) The labels passed during <a class="reference internal" href="#exposing.Exposer.fit" title="exposing.Exposer.fit"><code class="xref py py-meth docutils literal notranslate"><span class="pre">fit()</span></code></a></td>
 </tr>
 </tbody>
 </table>

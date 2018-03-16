@@ -189,26 +189,18 @@
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    given_subspace : tuple, optional, shape = [2]</span>
-<span class="sd">        Indices of dataset subspace used to calculate exposer.</span>
-<span class="sd">        If none given, last two features are used.</span>
+<span class="sd">        Indices of dataset subspace used to calculate exposer. (the default is</span>
+<span class="sd">        usage of last two features).</span>
 <span class="sd">    grain : int, optional</span>
-<span class="sd">        A parameter used for demonstation of how to pass and store paramters.</span>
+<span class="sd">        Number of bins dividing every dimension (the default is `16`).</span>
 <span class="sd">    a_steps : int, optional</span>
-<span class="sd">        A parameter used for demonstation of how to pass and store paramters.</span>
+<span class="sd">        Number of steps of anisotropic diffusion (the default is `5`).</span>
 
 <span class="sd">    Attributes</span>
 <span class="sd">    ----------</span>
 <span class="sd">    X_ : array, shape = [n_samples, n_features]</span>
 <span class="sd">        The input passed during :meth:`fit`</span>
 <span class="sd">    y_ : array, shape = [n_samples]</span>
-<span class="sd">        The labels passed during :meth:`fit`</span>
-<span class="sd">    model_ : array, shape = [grain, grain, n_classes]</span>
-<span class="sd">        The labels passed during :meth:`fit`</span>
-<span class="sd">    hue_ : array, shape = [grain, grain]</span>
-<span class="sd">        The labels passed during :meth:`fit`</span>
-<span class="sd">    value_ : array, shape = [grain, grain]</span>
-<span class="sd">        The labels passed during :meth:`fit`</span>
-<span class="sd">    saturation_ : array, shape = [grain, grain]</span>
 <span class="sd">        The labels passed during :meth:`fit`</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
