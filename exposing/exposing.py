@@ -11,6 +11,12 @@ from sklearn.preprocessing import MinMaxScaler, LabelEncoder
 from medpy.filter.smoothing import anisotropic_diffusion
 import matplotlib.colors as colors
 
+APPROACHES = ('brutal', 'random', 'heuristic')
+
+
+class ECE(BaseEstimator, ClassifierMixin):
+    pass
+
 
 class Exposer(BaseEstimator, ClassifierMixin):
     """A classifier using basic, planar exposer.
