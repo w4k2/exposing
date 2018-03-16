@@ -17,11 +17,12 @@ class Exposer(BaseEstimator, ClassifierMixin):
 
     Parameters
     ----------
-    given_subspace : str, optional
+    given_subspace : tuple, optional, shape = [2]
+        Indices of dataset subspace used to calculate exposer.
+        If none given, last two features are used.
+    grain : int, optional
         A parameter used for demonstation of how to pass and store paramters.
-    grain : str, optional
-        A parameter used for demonstation of how to pass and store paramters.
-    a_steps : str, optional
+    a_steps : int, optional
         A parameter used for demonstation of how to pass and store paramters.
 
     Attributes
