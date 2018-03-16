@@ -185,14 +185,18 @@
 <span class="kn">import</span> <span class="nn">warnings</span>
 
 <span class="n">APPROACHES</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;brutal&#39;</span><span class="p">,</span> <span class="s1">&#39;random&#39;</span><span class="p">,</span> <span class="s1">&#39;heuristic&#39;</span><span class="p">)</span>
+<span class="n">FUSERS</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;equal&#39;</span><span class="p">,</span> <span class="s1">&#39;theta&#39;</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="EE"><a class="viewcode-back" href="../../exposing.html#exposing.EE">[docs]</a><span class="k">class</span> <span class="nc">EE</span><span class="p">(</span><span class="n">BaseEstimator</span><span class="p">,</span> <span class="n">ClassifierMixin</span><span class="p">):</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">grain</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">a_steps</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">n_base</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span> <span class="n">approach</span><span class="o">=</span><span class="s1">&#39;random&#39;</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">grain</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">a_steps</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">n_base</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span> <span class="n">n_seek</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span>
+                 <span class="n">approach</span><span class="o">=</span><span class="s1">&#39;random&#39;</span><span class="p">,</span> <span class="n">fuser</span><span class="o">=</span><span class="s1">&#39;equal&#39;</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">grain</span> <span class="o">=</span> <span class="n">grain</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">a_steps</span> <span class="o">=</span> <span class="n">a_steps</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">n_base</span> <span class="o">=</span> <span class="n">n_base</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">n_seek</span> <span class="o">=</span> <span class="n">n_seek</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">approach</span> <span class="o">=</span> <span class="n">approach</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fuser</span> <span class="o">=</span> <span class="n">fuser</span>
 
     <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
         <span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">check_X_y</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
@@ -243,7 +247,11 @@
         <span class="n">ensemble_signatures</span> <span class="o">=</span> <span class="p">[</span><span class="n">clf</span><span class="o">.</span><span class="n">signatures</span><span class="p">(</span><span class="n">X</span><span class="p">)</span> <span class="k">for</span> <span class="n">clf</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">ensemble_</span><span class="p">]</span>
 
         <span class="c1"># Acquire supports</span>
-        <span class="n">supports</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">ensemble_signatures</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">supports</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">fuser</span> <span class="o">==</span> <span class="s1">&#39;equal&#39;</span><span class="p">:</span>
+            <span class="n">supports</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">ensemble_signatures</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">fuser</span> <span class="o">==</span> <span class="s1">&#39;theta&#39;</span><span class="p">:</span>
+            <span class="k">pass</span>
 
         <span class="c1"># Predict and decode prediction</span>
         <span class="n">prediction</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">supports</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
