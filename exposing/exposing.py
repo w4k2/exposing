@@ -13,7 +13,6 @@ from sklearn.utils.random import sample_without_replacement as swr
 from sklearn.preprocessing import MinMaxScaler
 from medpy.filter.smoothing import anisotropic_diffusion
 import matplotlib.colors as colors
-import warnings
 
 APPROACHES = ('brutal', 'random', 'heuristic')
 FUSERS = ('equal', 'theta')
