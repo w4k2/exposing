@@ -178,6 +178,7 @@
 <span class="kn">from</span> <span class="nn">sklearn.base</span> <span class="k">import</span> <span class="n">BaseEstimator</span><span class="p">,</span> <span class="n">ClassifierMixin</span>
 <span class="kn">from</span> <span class="nn">sklearn.utils.validation</span> <span class="k">import</span> <span class="n">check_X_y</span><span class="p">,</span> <span class="n">check_array</span><span class="p">,</span> <span class="n">check_is_fitted</span>
 <span class="kn">from</span> <span class="nn">sklearn.utils.multiclass</span> <span class="k">import</span> <span class="n">unique_labels</span>
+<span class="kn">from</span> <span class="nn">sklearn.utils.random</span> <span class="k">import</span> <span class="n">sample_without_replacement</span>
 <span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="k">import</span> <span class="n">MinMaxScaler</span><span class="p">,</span> <span class="n">LabelEncoder</span>
 <span class="kn">from</span> <span class="nn">medpy.filter.smoothing</span> <span class="k">import</span> <span class="n">anisotropic_diffusion</span>
 <span class="kn">import</span> <span class="nn">matplotlib.colors</span> <span class="k">as</span> <span class="nn">colors</span>
@@ -187,15 +188,68 @@
 
 
 <div class="viewcode-block" id="EE"><a class="viewcode-back" href="../../exposing.html#exposing.EE">[docs]</a><span class="k">class</span> <span class="nc">EE</span><span class="p">(</span><span class="n">BaseEstimator</span><span class="p">,</span> <span class="n">ClassifierMixin</span><span class="p">):</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">given_subspace</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">grain</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">a_steps</span><span class="o">=</span><span class="mi">5</span><span class="p">):</span>
-        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s2">&quot;ECE INIT&quot;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">given_subspace</span> <span class="o">=</span> <span class="n">given_subspace</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">grain</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">a_steps</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">n_base</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span> <span class="n">approach</span><span class="o">=</span><span class="s1">&#39;random&#39;</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">grain</span> <span class="o">=</span> <span class="n">grain</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">a_steps</span> <span class="o">=</span> <span class="n">a_steps</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">n_base</span> <span class="o">=</span> <span class="n">n_base</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">approach</span> <span class="o">=</span> <span class="n">approach</span>
 
     <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
-        <span class="c1"># Return the classifier</span></div>
+        <span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">check_X_y</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">X_</span> <span class="o">=</span> <span class="n">X</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">y_</span> <span class="o">=</span> <span class="n">y</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">n_features_</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+        <span class="c1"># Store the classes seen during fit</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">le_</span> <span class="o">=</span> <span class="n">LabelEncoder</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">le_</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">classes_</span> <span class="o">=</span> <span class="n">unique_labels</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+
+        <span class="c1"># Establish set of subspaces</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">subspaces_</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">approach</span> <span class="o">==</span> <span class="s1">&#39;brutal&#39;</span><span class="p">:</span>
+            <span class="k">pass</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">approach</span> <span class="o">==</span> <span class="s1">&#39;random&#39;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">subspaces_</span> <span class="o">=</span> <span class="p">[</span><span class="n">sample_without_replacement</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n_features_</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+                               <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n_base</span><span class="p">)]</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">approach</span> <span class="o">==</span> <span class="s1">&#39;heuristic&#39;</span><span class="p">:</span>
+            <span class="k">pass</span>
+
+        <span class="c1"># Compose ensemble</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ensemble_</span> <span class="o">=</span> <span class="p">[</span><span class="n">Exposer</span><span class="p">(</span><span class="n">grain</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">grain</span><span class="p">,</span>
+                                  <span class="n">a_steps</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">a_steps</span><span class="p">,</span>
+                                  <span class="n">given_subspace</span><span class="o">=</span><span class="n">subspace</span><span class="p">)</span>
+                          <span class="k">for</span> <span class="n">subspace</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">subspaces_</span><span class="p">]</span>
+
+        <span class="c1"># Fit ensemble</span>
+        <span class="p">[</span><span class="n">clf</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span> <span class="k">for</span> <span class="n">clf</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">ensemble_</span><span class="p">]</span>
+
+        <span class="c1"># Gather thetas</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">thetas_</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">clf</span><span class="o">.</span><span class="n">theta_</span> <span class="k">for</span> <span class="n">clf</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">ensemble_</span><span class="p">])</span>
+
+        <span class="c1"># Return the classifier</span>
         <span class="k">return</span> <span class="bp">self</span>
+
+    <span class="k">def</span> <span class="nf">predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
+        <span class="c1"># Check is fit had been called</span>
+        <span class="n">check_is_fitted</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;X_&#39;</span><span class="p">,</span> <span class="s1">&#39;y_&#39;</span><span class="p">,</span> <span class="s1">&#39;ensemble_&#39;</span><span class="p">])</span>
+
+        <span class="c1"># Input validation</span>
+        <span class="n">X</span> <span class="o">=</span> <span class="n">check_array</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">X_</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;number of features does not match&#39;</span><span class="p">)</span>
+
+        <span class="c1"># Establish signatures</span>
+        <span class="n">ensemble_signatures</span> <span class="o">=</span> <span class="p">[</span><span class="n">clf</span><span class="o">.</span><span class="n">signatures</span><span class="p">(</span><span class="n">X</span><span class="p">)</span> <span class="k">for</span> <span class="n">clf</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">ensemble_</span><span class="p">]</span>
+
+        <span class="c1"># Acquire supports</span>
+        <span class="n">supports</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">ensemble_signatures</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+        <span class="c1"># Predict and decode prediction</span>
+        <span class="n">prediction</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">supports</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">decoded_prediction</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">le_</span><span class="o">.</span><span class="n">inverse_transform</span><span class="p">(</span><span class="n">prediction</span><span class="p">)</span>
+</div>
+        <span class="k">return</span> <span class="n">decoded_prediction</span>
 
 
 <div class="viewcode-block" id="Exposer"><a class="viewcode-back" href="../../exposing.html#exposing.Exposer">[docs]</a><span class="k">class</span> <span class="nc">Exposer</span><span class="p">(</span><span class="n">BaseEstimator</span><span class="p">,</span> <span class="n">ClassifierMixin</span><span class="p">):</span>

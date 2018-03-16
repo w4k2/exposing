@@ -485,7 +485,7 @@ seen udring fit.</p>
 
 <dl class="class">
 <dt id="exposing.EE">
-<em class="property">class </em><code class="descclassname">exposing.</code><code class="descname">EE</code><span class="sig-paren">(</span><em>given_subspace=None</em>, <em>grain=16</em>, <em>a_steps=5</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/exposing/exposing.html#EE"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#exposing.EE" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">exposing.</code><code class="descname">EE</code><span class="sig-paren">(</span><em>grain=16</em>, <em>a_steps=5</em>, <em>n_base=15</em>, <em>approach='random'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/exposing/exposing.html#EE"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#exposing.EE" title="Permalink to this definition">¶</a></dt>
 <dd><p class="rubric">Methods</p>
 <table border="1" class="longtable docutils">
 <colgroup>
@@ -499,10 +499,13 @@ seen udring fit.</p>
 <tr class="row-even"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_params</span></code>([deep])</td>
 <td>Get parameters for this estimator.</td>
 </tr>
-<tr class="row-odd"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">score</span></code>(X,&nbsp;y[,&nbsp;sample_weight])</td>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">predict</span></code>(X)</td>
+<td></td>
+</tr>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">score</span></code>(X,&nbsp;y[,&nbsp;sample_weight])</td>
 <td>Returns the mean accuracy on the given test data and labels.</td>
 </tr>
-<tr class="row-even"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_params</span></code>(**params)</td>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_params</span></code>(**params)</td>
 <td>Set the parameters of this estimator.</td>
 </tr>
 </tbody>
