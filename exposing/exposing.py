@@ -10,12 +10,21 @@ from sklearn.utils.multiclass import unique_labels
 from sklearn.preprocessing import MinMaxScaler, LabelEncoder
 from medpy.filter.smoothing import anisotropic_diffusion
 import matplotlib.colors as colors
+import warnings
 
 APPROACHES = ('brutal', 'random', 'heuristic')
 
 
 class ECE(BaseEstimator, ClassifierMixin):
-    pass
+    def __init__(self, given_subspace=None, grain=16, a_steps=5):
+        warnings.warn("ECE INIT")
+        self.given_subspace = given_subspace
+        self.grain = grain
+        self.a_steps = a_steps
+
+    def fit(self, X, y):
+        # Return the classifier
+        return self
 
 
 class Exposer(BaseEstimator, ClassifierMixin):

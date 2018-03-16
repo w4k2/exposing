@@ -1,4 +1,4 @@
-from .exposing import (Exposer)
+from .exposing import (Exposer, ECE)
 from . import exposing
 
-__all__ = ['Exposer']
+__all__ = ['Exposer', 'ECE']
