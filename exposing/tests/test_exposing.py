@@ -24,7 +24,6 @@ def test_given_subspace():
     estimator = Exposer(given_subspace=(0, 1))
     estimator.fit(X_train, y_train)
     score = estimator.score(X_test, y_test)
-    warnings.warn("Exposer accuracy = %.3f" % score)
 
 
 def test_rgb():
@@ -36,7 +35,7 @@ def test_rgb():
 
 def test_ece():
     X_train, X_test, y_train, y_test = breast_dataset()
-    estimator = EE()
-    estimator.fit(X_train, y_train)
-    score = estimator.score(X_test, y_test)
-    warnings.warn("EE accuracy = %.3f" % score)
+    for fuser in ('equal', 'theta'):
+        estimator = EE(fuser=fuser)
+        estimator.fit(X_train, y_train)
+        score = estimator.score(X_test, y_test)

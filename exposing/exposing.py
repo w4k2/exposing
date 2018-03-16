@@ -8,8 +8,9 @@ from sklearn.base import BaseEstimator, ClassifierMixin
 from sklearn.utils.validation import check_X_y, check_array, check_is_fitted
 from sklearn.utils import check_random_state
 from sklearn.utils.multiclass import unique_labels
+from sklearn.utils.multiclass import check_classification_targets
 from sklearn.utils.random import sample_without_replacement as swr
-from sklearn.preprocessing import MinMaxScaler, LabelEncoder
+from sklearn.preprocessing import MinMaxScaler
 from medpy.filter.smoothing import anisotropic_diffusion
 import matplotlib.colors as colors
 import warnings
@@ -37,9 +38,7 @@ class EE(BaseEstimator, ClassifierMixin):
         self.n_features_ = X.shape[1]
 
         # Store the classes seen during fit
-        self.le_ = LabelEncoder()
-        self.le_.fit(y)
-        self.classes_ = unique_labels(y)
+        self.classes_, _ = np.unique(y, return_inverse=True)
 
         # Establish set of subspaces
         self.subspaces_ = None
@@ -89,11 +88,10 @@ class EE(BaseEstimator, ClassifierMixin):
                                                             np.newaxis]
             supports = np.sum(weighted_signatures, axis=0)
 
-        # Predict and decode prediction
+        # Predict
         prediction = np.argmax(supports, axis=1)
-        decoded_prediction = self.le_.inverse_transform(prediction)
 
-        return decoded_prediction
+        return self.classes_[prediction]
 
 
 class Exposer(BaseEstimator, ClassifierMixin):
@@ -196,6 +194,8 @@ class Exposer(BaseEstimator, ClassifierMixin):
         """
         # Check that X and y have correct shape
         X, y = check_X_y(X, y)
+        check_classification_targets(y)
+
         self.X_ = X
         self.y_ = y
         self.n_features_ = X.shape[1]
@@ -215,16 +215,11 @@ class Exposer(BaseEstimator, ClassifierMixin):
         subspaced_X = X[:, self.subspace_].astype('float64')
 
         # Store the classes seen during fit
-        self.le_ = LabelEncoder()
-        self.le_.fit(y)
-        self.classes_ = unique_labels(y)
+        self.classes_, y = np.unique(y, return_inverse=True)
 
         # Scaler
         self.scaler_ = MinMaxScaler()
         self.scaler_.fit(subspaced_X)
-
-        # Exposing versions of X and y
-        exposing_y = self.le_.transform(y)
 
         # Empty model
         self.model_ = np.zeros((
@@ -234,7 +229,7 @@ class Exposer(BaseEstimator, ClassifierMixin):
         # Exposing
         X_locations = self.locations(subspaced_X)
         unique, counts = np.unique(np.array(
-            [X_locations[:, 0], X_locations[:, 1], exposing_y]).T,
+            [X_locations[:, 0], X_locations[:, 1], y]).T,
                                    return_counts=True, axis=0)
         self.model_[unique[:, 0], unique[:, 1], unique[:, 2]] += counts
 
@@ -358,6 +353,5 @@ class Exposer(BaseEstimator, ClassifierMixin):
 
         signatures = self.signatures(X)
         prediction = np.argmax(signatures, axis=1)
-        decoded_prediction = self.le_.inverse_transform(prediction)
 
-        return decoded_prediction
+        return self.classes_[prediction]
