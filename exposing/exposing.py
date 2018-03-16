@@ -14,14 +14,18 @@ import matplotlib.colors as colors
 import warnings
 
 APPROACHES = ('brutal', 'random', 'heuristic')
+FUSERS = ('equal', 'theta')
 
 
 class EE(BaseEstimator, ClassifierMixin):
-    def __init__(self, grain=16, a_steps=5, n_base=15, approach='random'):
+    def __init__(self, grain=16, a_steps=5, n_base=15, n_seek=30,
+                 approach='random', fuser='equal'):
         self.grain = grain
         self.a_steps = a_steps
         self.n_base = n_base
+        self.n_seek = n_seek
         self.approach = approach
+        self.fuser = fuser
 
     def fit(self, X, y):
         X, y = check_X_y(X, y)
@@ -72,7 +76,11 @@ class EE(BaseEstimator, ClassifierMixin):
         ensemble_signatures = [clf.signatures(X) for clf in self.ensemble_]
 
         # Acquire supports
-        supports = np.sum(ensemble_signatures, axis=0)
+        supports = None
+        if self.fuser == 'equal':
+            supports = np.sum(ensemble_signatures, axis=0)
+        elif self.fuser == 'theta':
+            pass
 
         # Predict and decode prediction
         prediction = np.argmax(supports, axis=1)
