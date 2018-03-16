@@ -15,6 +15,16 @@ import matplotlib.colors as colors
 class Exposer(BaseEstimator, ClassifierMixin):
     """A classifier using basic, planar exposer.
 
+    Notes
+    -----
+    Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+    tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
+    veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
+    commodo consequat. Duis aute irure dolor in reprehenderit in voluptate
+    velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat
+    cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id
+    est laborum.
+
     Parameters
     ----------
     given_subspace : tuple, optional, shape = [2]
@@ -31,6 +41,14 @@ class Exposer(BaseEstimator, ClassifierMixin):
         The input passed during :meth:`fit`
     y_ : array, shape = [n_samples]
         The labels passed during :meth:`fit`
+
+    References
+    ----------
+    .. [1] O. McNoleg, "The integration of GIS, remote sensing,
+       expert systems and adaptive co-kriging for environmental habitat
+       modelling of the Highland Haggis using object-oriented, fuzzy-logic
+       and neural-network techniques," Computers & Geosciences, vol. 22,
+       pp. 585-588, 1996.
     """
 
     def __init__(self, given_subspace=None, grain=16, a_steps=5):
@@ -43,9 +61,8 @@ class Exposer(BaseEstimator, ClassifierMixin):
 
         Returns
         -------
-        y : array of int of shape = [n_samples]
-            The label for each sample is the label of the closest sample seen
-             during fit.
+        array_like : array of float of shape = [grain, grain, n_classes]
+            A complete, fitted model of exposer.
         """
         check_is_fitted(self, ['X_', 'y_', 'model_'])
         return self.model_
@@ -55,7 +72,7 @@ class Exposer(BaseEstimator, ClassifierMixin):
 
         Returns
         -------
-        y : array of int of shape = [n_samples]
+        array_like : array of float of shape = [grain, grain, 3]
             The label for each sample is the label of the closest sample seen
              during fit.
         """
@@ -67,7 +84,7 @@ class Exposer(BaseEstimator, ClassifierMixin):
 
         Returns
         -------
-        y : array of int of shape = [n_samples]
+        array_like : array of float of shape = [grain, grain, 3]
             The label for each sample is the label of the closest sample seen
              during fit.
         """
