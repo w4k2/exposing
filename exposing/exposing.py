@@ -18,26 +18,18 @@ class Exposer(BaseEstimator, ClassifierMixin):
     Parameters
     ----------
     given_subspace : tuple, optional, shape = [2]
-        Indices of dataset subspace used to calculate exposer.
-        If none given, last two features are used.
+        Indices of dataset subspace used to calculate exposer. (the default is
+        usage of last two features).
     grain : int, optional
-        A parameter used for demonstation of how to pass and store paramters.
+        Number of bins dividing every dimension (the default is `16`).
     a_steps : int, optional
-        A parameter used for demonstation of how to pass and store paramters.
+        Number of steps of anisotropic diffusion (the default is `5`).
 
     Attributes
     ----------
     X_ : array, shape = [n_samples, n_features]
         The input passed during :meth:`fit`
     y_ : array, shape = [n_samples]
-        The labels passed during :meth:`fit`
-    model_ : array, shape = [grain, grain, n_classes]
-        The labels passed during :meth:`fit`
-    hue_ : array, shape = [grain, grain]
-        The labels passed during :meth:`fit`
-    value_ : array, shape = [grain, grain]
-        The labels passed during :meth:`fit`
-    saturation_ : array, shape = [grain, grain]
         The labels passed during :meth:`fit`
     """
 
