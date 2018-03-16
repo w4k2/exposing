@@ -23,20 +23,20 @@ An example plot of :class:`skltemplate.template.TemplateClassifier`
 
     import numpy as np
     from numpy.testing import assert_almost_equal
-    from sklearn.datasets import make_circles, make_moons
+    from sklearn.datasets import make_blobs
     from sklearn.model_selection import train_test_split
     from matplotlib import pyplot as plt
 
     from exposing import Exposer
 
     n_samples = 10000
-    ds = make_circles(noise=0.2, factor=0.5, random_state=1, n_samples=n_samples)
-    ds = make_moons(noise=0.3, random_state=0, n_samples=n_samples)
+    ds = make_blobs(n_samples=n_samples, n_features=2, centers=2,
+                    random_state=0, cluster_std=3.0)
     X, y = ds
     X_train, X_test, y_train, y_test = \
         train_test_split(X, y, test_size=.4, random_state=42)
 
-    clf = Exposer(a_steps=5, grain=32)
+    clf = Exposer()
     clf.fit(X_train, y_train)
 
     fig, axs = plt.subplots(2, 3, figsize=(9, 6))
@@ -65,7 +65,7 @@ An example plot of :class:`skltemplate.template.TemplateClassifier`
             axx.axis('off')
     plt.show()
 
-**Total running time of the script:** ( 0 minutes  0.159 seconds)
+**Total running time of the script:** ( 0 minutes  0.160 seconds)
 
 
 

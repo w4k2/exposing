@@ -194,11 +194,11 @@ usage of last two features).</p>
 </div></blockquote>
 <p><strong>grain</strong> : int, optional</p>
 <blockquote>
-<div><p>Number of bins dividing every dimension (the default is <cite>16</cite>).</p>
+<div><p>Number of bins dividing every dimension (the default is <code class="docutils literal notranslate"><span class="pre">16</span></code>).</p>
 </div></blockquote>
 <p><strong>a_steps</strong> : int, optional</p>
 <blockquote class="last">
-<div><p>Number of steps of anisotropic diffusion (the default is <cite>5</cite>).</p>
+<div><p>Number of steps of anisotropic diffusion (the default is <code class="docutils literal notranslate"><span class="pre">5</span></code>).</p>
 </div></blockquote>
 </td>
 </tr>
@@ -216,24 +216,36 @@ est laborum.</p>
 <table class="docutils citation" frame="void" id="r1" rules="none">
 <colgroup><col class="label" /><col /></colgroup>
 <tbody valign="top">
-<tr><td class="label"><a class="fn-backref" href="#id1">[R1]</a></td><td>O. McNoleg, “The integration of GIS, remote sensing,
-expert systems and adaptive co-kriging for environmental habitat
-modelling of the Highland Haggis using object-oriented, fuzzy-logic
-and neural-network techniques,” Computers &amp; Geosciences, vol. 22,
-pp. 585-588, 1996.</td></tr>
+<tr><td class="label"><a class="fn-backref" href="#id1">[R1]</a></td><td>Ksieniewicz, P., Grana, M., Wozniak, M. (2017). Paired feature
+multilayer ensemble - concept and evaluation of a classifier. Journal of
+Intelligent and Fuzzy Systems,  32(2), 1427-1436.</td></tr>
+</tbody>
+</table>
+<table class="docutils citation" frame="void" id="r2" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id2">[R2]</a></td><td>Perona, P., Malik, J. (1990). Scale-space and edge detection using
+anisotropic diffusion. IEEE Transactions on Pattern Analysis and Machine
+Intelligence, 12(7), 629-639.</td></tr>
 </tbody>
 </table>
 <p class="rubric">Attributes</p>
 <table border="1" class="docutils">
 <colgroup>
-<col width="7%" />
-<col width="93%" />
+<col width="13%" />
+<col width="87%" />
 </colgroup>
 <tbody valign="top">
 <tr class="row-odd"><td><strong>X_</strong></td>
 <td>(array, shape = [n_samples, n_features]) The input passed during <a class="reference internal" href="#exposing.Exposer.fit" title="exposing.Exposer.fit"><code class="xref py py-meth docutils literal notranslate"><span class="pre">fit()</span></code></a></td>
 </tr>
 <tr class="row-even"><td><strong>y_</strong></td>
+<td>(array, shape = [n_samples]) The labels passed during <a class="reference internal" href="#exposing.Exposer.fit" title="exposing.Exposer.fit"><code class="xref py py-meth docutils literal notranslate"><span class="pre">fit()</span></code></a></td>
+</tr>
+<tr class="row-odd"><td><strong>theta_</strong></td>
+<td>(array, shape = [n_samples]) The labels passed during <a class="reference internal" href="#exposing.Exposer.fit" title="exposing.Exposer.fit"><code class="xref py py-meth docutils literal notranslate"><span class="pre">fit()</span></code></a></td>
+</tr>
+<tr class="row-even"><td><strong>thetas_</strong></td>
 <td>(array, shape = [n_samples]) The labels passed during <a class="reference internal" href="#exposing.Exposer.fit" title="exposing.Exposer.fit"><code class="xref py py-meth docutils literal notranslate"><span class="pre">fit()</span></code></a></td>
 </tr>
 </tbody>
