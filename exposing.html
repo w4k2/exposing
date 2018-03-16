@@ -204,6 +204,25 @@ usage of last two features).</p>
 </tr>
 </tbody>
 </table>
+<p class="rubric">Notes</p>
+<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
+veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
+commodo consequat. Duis aute irure dolor in reprehenderit in voluptate
+velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat
+cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id
+est laborum.</p>
+<p class="rubric">References</p>
+<table class="docutils citation" frame="void" id="r1" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id1">[R1]</a></td><td>O. McNoleg, “The integration of GIS, remote sensing,
+expert systems and adaptive co-kriging for environmental habitat
+modelling of the Highland Haggis using object-oriented, fuzzy-logic
+and neural-network techniques,” Computers &amp; Geosciences, vol. 22,
+pp. 585-588, 1996.</td></tr>
+</tbody>
+</table>
 <p class="rubric">Attributes</p>
 <table border="1" class="docutils">
 <colgroup>
@@ -297,7 +316,7 @@ usage of last two features).</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>y</strong> : array of int of shape = [n_samples]</p>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>array_like</strong> : array of float of shape = [grain, grain, 3]</p>
 <blockquote class="last">
 <div><dl class="docutils">
 <dt>The label for each sample is the label of the closest sample seen</dt>
@@ -343,13 +362,9 @@ usage of last two features).</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>y</strong> : array of int of shape = [n_samples]</p>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>array_like</strong> : array of float of shape = [grain, grain, n_classes]</p>
 <blockquote class="last">
-<div><dl class="docutils">
-<dt>The label for each sample is the label of the closest sample seen</dt>
-<dd><p class="first last">during fit.</p>
-</dd>
-</dl>
+<div><p>A complete, fitted model of exposer.</p>
 </div></blockquote>
 </td>
 </tr>
@@ -415,7 +430,7 @@ seen udring fit.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>y</strong> : array of int of shape = [n_samples]</p>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>array_like</strong> : array of float of shape = [grain, grain, 3]</p>
 <blockquote class="last">
 <div><dl class="docutils">
 <dt>The label for each sample is the label of the closest sample seen</dt>

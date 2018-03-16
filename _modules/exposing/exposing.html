@@ -186,6 +186,16 @@
 <div class="viewcode-block" id="Exposer"><a class="viewcode-back" href="../../exposing.html#exposing.Exposer">[docs]</a><span class="k">class</span> <span class="nc">Exposer</span><span class="p">(</span><span class="n">BaseEstimator</span><span class="p">,</span> <span class="n">ClassifierMixin</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;A classifier using basic, planar exposer.</span>
 
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod</span>
+<span class="sd">    tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim</span>
+<span class="sd">    veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea</span>
+<span class="sd">    commodo consequat. Duis aute irure dolor in reprehenderit in voluptate</span>
+<span class="sd">    velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat</span>
+<span class="sd">    cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id</span>
+<span class="sd">    est laborum.</span>
+
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    given_subspace : tuple, optional, shape = [2]</span>
@@ -202,6 +212,14 @@
 <span class="sd">        The input passed during :meth:`fit`</span>
 <span class="sd">    y_ : array, shape = [n_samples]</span>
 <span class="sd">        The labels passed during :meth:`fit`</span>
+
+<span class="sd">    References</span>
+<span class="sd">    ----------</span>
+<span class="sd">    .. [1] O. McNoleg, &quot;The integration of GIS, remote sensing,</span>
+<span class="sd">       expert systems and adaptive co-kriging for environmental habitat</span>
+<span class="sd">       modelling of the Highland Haggis using object-oriented, fuzzy-logic</span>
+<span class="sd">       and neural-network techniques,&quot; Computers &amp; Geosciences, vol. 22,</span>
+<span class="sd">       pp. 585-588, 1996.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">given_subspace</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">grain</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">a_steps</span><span class="o">=</span><span class="mi">5</span><span class="p">):</span>
@@ -214,9 +232,8 @@
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
-<span class="sd">        y : array of int of shape = [n_samples]</span>
-<span class="sd">            The label for each sample is the label of the closest sample seen</span>
-<span class="sd">             during fit.</span>
+<span class="sd">        array_like : array of float of shape = [grain, grain, n_classes]</span>
+<span class="sd">            A complete, fitted model of exposer.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">check_is_fitted</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;X_&#39;</span><span class="p">,</span> <span class="s1">&#39;y_&#39;</span><span class="p">,</span> <span class="s1">&#39;model_&#39;</span><span class="p">])</span></div>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_</span>
@@ -226,7 +243,7 @@
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
-<span class="sd">        y : array of int of shape = [n_samples]</span>
+<span class="sd">        array_like : array of float of shape = [grain, grain, 3]</span>
 <span class="sd">            The label for each sample is the label of the closest sample seen</span>
 <span class="sd">             during fit.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -238,7 +255,7 @@
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
-<span class="sd">        y : array of int of shape = [n_samples]</span>
+<span class="sd">        array_like : array of float of shape = [grain, grain, 3]</span>
 <span class="sd">            The label for each sample is the label of the closest sample seen</span>
 <span class="sd">             during fit.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
