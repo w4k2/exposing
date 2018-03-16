@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Comparing classifiers on three synthetic datasets &mdash; exposing 0.1.0 documentation</title>
+  <title>Comparing classifiers on three real datasets &mdash; exposing 0.1.0 documentation</title>
   
 
   
@@ -41,8 +41,8 @@
         <link rel="search" title="Search" href="../search.html"/>
     <link rel="top" title="exposing 0.1.0 documentation" href="../index.html"/>
         <link rel="up" title="General examples" href="index.html"/>
-        <link rel="next" title="About stream-learn" href="../about.html"/>
-        <link rel="prev" title="Comparing classifiers on three real datasets" href="compare_nonplanar.html"/> 
+        <link rel="next" title="Comparing classifiers on three synthetic datasets" href="compare_classifiers.html"/>
+        <link rel="prev" title="Showing colorspace parameters of planar Exposer" href="plot_colorspace.html"/> 
 
   
   <script src="../_static/js/modernizr.min.js"></script>
@@ -107,8 +107,8 @@
 <li class="toctree-l2"><a class="reference internal" href="plot_ee.html">Showing Exposition of EE</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_hyperparameters.html">Influence of hyperparameters</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_colorspace.html">Showing colorspace parameters of planar Exposer</a></li>
-<li class="toctree-l2"><a class="reference internal" href="compare_nonplanar.html">Comparing classifiers on three real datasets</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">Comparing classifiers on three synthetic datasets</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Comparing classifiers on three real datasets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compare_classifiers.html">Comparing classifiers on three synthetic datasets</a></li>
 </ul>
 </li>
 </ul>
@@ -161,13 +161,13 @@
         
           <li><a href="index.html">General examples</a> &raquo;</li>
         
-      <li>Comparing classifiers on three synthetic datasets</li>
+      <li>Comparing classifiers on three real datasets</li>
     
     
       <li class="wy-breadcrumbs-aside">
         
             
-            <a href="../_sources/auto_examples/compare_classifiers.rst.txt" rel="nofollow"> View page source</a>
+            <a href="../_sources/auto_examples/compare_nonplanar.rst.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -180,8 +180,8 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="comparing-classifiers-on-three-synthetic-datasets">
-<span id="sphx-glr-auto-examples-compare-classifiers-py"></span><h1>Comparing classifiers on three synthetic datasets<a class="headerlink" href="#comparing-classifiers-on-three-synthetic-datasets" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="comparing-classifiers-on-three-real-datasets">
+<span id="sphx-glr-auto-examples-compare-nonplanar-py"></span><h1>Comparing classifiers on three real datasets<a class="headerlink" href="#comparing-classifiers-on-three-real-datasets" title="Permalink to this headline">¶</a></h1>
 <p>An example plot of <code class="xref py py-class docutils literal notranslate"><span class="pre">skltemplate.template.TemplateClassifier</span></code></p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">datetime</span>
@@ -190,8 +190,9 @@
 <span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">train_test_split</span>
 <span class="kn">from</span> <span class="nn">matplotlib</span> <span class="kn">import</span> <span class="n">pyplot</span> <span class="k">as</span> <span class="n">plt</span>
 <span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="kn">import</span> <span class="n">make_moons</span><span class="p">,</span> <span class="n">make_circles</span><span class="p">,</span> <span class="n">make_classification</span>
+<span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="kn">import</span> <span class="n">load_breast_cancer</span><span class="p">,</span> <span class="n">load_iris</span>
 
-<span class="kn">from</span> <span class="nn">exposing</span> <span class="kn">import</span> <span class="n">Exposer</span>
+<span class="kn">from</span> <span class="nn">exposing</span> <span class="kn">import</span> <span class="n">EE</span>
 <span class="kn">from</span> <span class="nn">sklearn.neural_network</span> <span class="kn">import</span> <span class="n">MLPClassifier</span>
 <span class="kn">from</span> <span class="nn">sklearn.neighbors</span> <span class="kn">import</span> <span class="n">KNeighborsClassifier</span>
 <span class="kn">from</span> <span class="nn">sklearn.svm</span> <span class="kn">import</span> <span class="n">SVC</span>
@@ -202,21 +203,13 @@
 <span class="kn">from</span> <span class="nn">sklearn.naive_bayes</span> <span class="kn">import</span> <span class="n">GaussianNB</span>
 <span class="kn">from</span> <span class="nn">sklearn.discriminant_analysis</span> <span class="kn">import</span> <span class="n">QuadraticDiscriminantAnalysis</span>
 
-<span class="n">n_samples</span> <span class="o">=</span> <span class="mi">1000</span>
-<span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">make_classification</span><span class="p">(</span><span class="n">n_features</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">n_redundant</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">n_informative</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
-                           <span class="n">random_state</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">n_clusters_per_class</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">n_samples</span> <span class="o">=</span> <span class="n">n_samples</span><span class="p">)</span>
-<span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">RandomState</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
-<span class="n">X</span> <span class="o">+=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">rng</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
-<span class="n">linearly_separable</span> <span class="o">=</span> <span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
-
-<span class="n">datasets</span> <span class="o">=</span> <span class="p">[</span><span class="n">make_moons</span><span class="p">(</span><span class="n">noise</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">n_samples</span> <span class="o">=</span> <span class="n">n_samples</span><span class="p">),</span>
-            <span class="n">make_circles</span><span class="p">(</span><span class="n">noise</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">factor</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">n_samples</span> <span class="o">=</span> <span class="n">n_samples</span><span class="p">),</span>
-            <span class="n">linearly_separable</span>
+<span class="n">datasets</span> <span class="o">=</span> <span class="p">[</span><span class="n">load_breast_cancer</span><span class="p">(</span><span class="n">return_X_y</span><span class="o">=</span><span class="bp">True</span><span class="p">),</span>
+            <span class="n">load_iris</span><span class="p">(</span><span class="n">return_X_y</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
             <span class="p">]</span>
 
 <span class="n">names</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Nearest Neighbors&quot;</span><span class="p">,</span> <span class="s2">&quot;Linear SVM&quot;</span><span class="p">,</span> <span class="s2">&quot;RBF SVM&quot;</span><span class="p">,</span>
          <span class="s2">&quot;Decision Tree&quot;</span><span class="p">,</span> <span class="s2">&quot;Random Forest&quot;</span><span class="p">,</span> <span class="s2">&quot;AdaBoost&quot;</span><span class="p">,</span>
-         <span class="s2">&quot;Naive Bayes&quot;</span><span class="p">,</span> <span class="s2">&quot;QDA&quot;</span><span class="p">,</span> <span class="s2">&quot;Exposer&quot;</span><span class="p">]</span>
+         <span class="s2">&quot;Naive Bayes&quot;</span><span class="p">,</span> <span class="s2">&quot;QDA&quot;</span><span class="p">,</span> <span class="s2">&quot;EEequal&quot;</span><span class="p">,</span> <span class="s2">&quot;EEtheta&quot;</span><span class="p">]</span>
 
 <span class="n">classifiers</span> <span class="o">=</span> <span class="p">[</span>
     <span class="n">KNeighborsClassifier</span><span class="p">(</span><span class="mi">3</span><span class="p">),</span>
@@ -227,7 +220,8 @@
     <span class="n">AdaBoostClassifier</span><span class="p">(),</span>
     <span class="n">GaussianNB</span><span class="p">(),</span>
     <span class="n">QuadraticDiscriminantAnalysis</span><span class="p">(),</span>
-    <span class="n">Exposer</span><span class="p">()]</span>
+    <span class="n">EE</span><span class="p">(</span><span class="n">fuser</span><span class="o">=</span><span class="s1">&#39;equal&#39;</span><span class="p">),</span>
+    <span class="n">EE</span><span class="p">(</span><span class="n">fuser</span><span class="o">=</span><span class="s1">&#39;theta&#39;</span><span class="p">)]</span>
 
 <span class="k">for</span> <span class="n">ds_idx</span><span class="p">,</span> <span class="n">ds</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">datasets</span><span class="p">):</span>
     <span class="n">scores</span> <span class="o">=</span> <span class="p">{}</span>
@@ -235,7 +229,6 @@
 
     <span class="c1"># preprocess dataset, split into training and test part</span>
     <span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">ds</span>
-    <span class="c1">#X = StandardScaler().fit_transform(X)</span>
     <span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> \
         <span class="n">train_test_split</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=.</span><span class="mi">4</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
 
@@ -249,19 +242,24 @@
         <span class="n">score</span> <span class="o">=</span> <span class="n">clf</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X_test</span><span class="p">,</span> <span class="n">y_test</span><span class="p">)</span>
         <span class="n">end</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
         <span class="n">scores</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="n">name</span><span class="p">:</span> <span class="n">score</span><span class="p">})</span>
-        <span class="n">times</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="n">name</span><span class="p">:</span> <span class="p">((</span><span class="n">med</span><span class="o">-</span><span class="n">start</span><span class="p">)</span><span class="o">.</span><span class="n">microseconds</span><span class="p">,</span> <span class="p">(</span><span class="n">end</span><span class="o">-</span><span class="n">med</span><span class="p">)</span><span class="o">.</span><span class="n">microseconds</span><span class="p">)})</span>
+        <span class="n">times</span><span class="o">.</span><span class="n">update</span><span class="p">({</span>
+            <span class="n">name</span><span class="p">:</span> <span class="p">((</span><span class="n">med</span><span class="o">-</span><span class="n">start</span><span class="p">)</span><span class="o">.</span><span class="n">microseconds</span><span class="p">,</span>
+                   <span class="p">(</span><span class="n">end</span><span class="o">-</span><span class="n">med</span><span class="p">)</span><span class="o">.</span><span class="n">microseconds</span><span class="p">)</span>
+            <span class="p">})</span>
 
     <span class="n">results</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">scores</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="n">scores</span><span class="o">.</span><span class="n">get</span><span class="p">,</span> <span class="n">reverse</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">name</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">results</span><span class="p">):</span>
-        <span class="k">print</span> <span class="s1">&#39;</span><span class="si">%i</span><span class="s1"> - </span><span class="si">%.1f%%</span><span class="s1"> @ </span><span class="si">%s</span><span class="s1"> - </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">idx</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="mi">100</span> <span class="o">*</span> <span class="n">scores</span><span class="p">[</span><span class="n">name</span><span class="p">],</span> <span class="n">times</span><span class="p">[</span><span class="n">name</span><span class="p">],</span> <span class="n">name</span><span class="p">)</span>
+        <span class="k">print</span> <span class="s1">&#39;</span><span class="si">%i</span><span class="s1"> - </span><span class="si">%.1f%%</span><span class="s1"> @ </span><span class="si">%s</span><span class="s1"> - </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span>
+            <span class="n">idx</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="mi">100</span> <span class="o">*</span> <span class="n">scores</span><span class="p">[</span><span class="n">name</span><span class="p">],</span> <span class="n">times</span><span class="p">[</span><span class="n">name</span><span class="p">],</span> <span class="n">name</span>
+        <span class="p">)</span>
 </pre></div>
 </div>
 <p><strong>Total running time of the script:</strong> ( 0 minutes  0.000 seconds)</p>
 <div class="sphx-glr-footer docutils container">
 <div class="sphx-glr-download docutils container">
-<a class="reference download internal" href="../_downloads/compare_classifiers.py" download=""><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">compare_classifiers.py</span></code></a></div>
+<a class="reference download internal" href="../_downloads/compare_nonplanar.py" download=""><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">compare_nonplanar.py</span></code></a></div>
 <div class="sphx-glr-download docutils container">
-<a class="reference download internal" href="../_downloads/compare_classifiers.ipynb" download=""><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">compare_classifiers.ipynb</span></code></a></div>
+<a class="reference download internal" href="../_downloads/compare_nonplanar.ipynb" download=""><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">compare_nonplanar.ipynb</span></code></a></div>
 </div>
 <p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.readthedocs.io">Gallery generated by Sphinx-Gallery</a></p>
 </div>
@@ -276,10 +274,10 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../about.html" class="btn btn-neutral float-right" title="About stream-learn" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="compare_classifiers.html" class="btn btn-neutral float-right" title="Comparing classifiers on three synthetic datasets" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="compare_nonplanar.html" class="btn btn-neutral" title="Comparing classifiers on three real datasets" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="plot_colorspace.html" class="btn btn-neutral" title="Showing colorspace parameters of planar Exposer" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

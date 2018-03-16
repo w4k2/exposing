@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Influence of hyperparameters &mdash; exposing 0.1.0 documentation</title>
+  <title>Showing Exposition of EE &mdash; exposing 0.1.0 documentation</title>
   
 
   
@@ -41,8 +41,8 @@
         <link rel="search" title="Search" href="../search.html"/>
     <link rel="top" title="exposing 0.1.0 documentation" href="../index.html"/>
         <link rel="up" title="General examples" href="index.html"/>
-        <link rel="next" title="Showing colorspace parameters of planar Exposer" href="plot_colorspace.html"/>
-        <link rel="prev" title="Showing Exposition of EE" href="plot_ee.html"/> 
+        <link rel="next" title="Influence of hyperparameters" href="plot_hyperparameters.html"/>
+        <link rel="prev" title="Showing Exposition of planar Exposer" href="plot_exposer.html"/> 
 
   
   <script src="../_static/js/modernizr.min.js"></script>
@@ -104,8 +104,8 @@
 <ul class="current">
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">General examples</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="plot_exposer.html">Showing Exposition of planar Exposer</a></li>
-<li class="toctree-l2"><a class="reference internal" href="plot_ee.html">Showing Exposition of EE</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">Influence of hyperparameters</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Showing Exposition of EE</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plot_hyperparameters.html">Influence of hyperparameters</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_colorspace.html">Showing colorspace parameters of planar Exposer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="compare_nonplanar.html">Comparing classifiers on three real datasets</a></li>
 <li class="toctree-l2"><a class="reference internal" href="compare_classifiers.html">Comparing classifiers on three synthetic datasets</a></li>
@@ -161,13 +161,13 @@
         
           <li><a href="index.html">General examples</a> &raquo;</li>
         
-      <li>Influence of hyperparameters</li>
+      <li>Showing Exposition of EE</li>
     
     
       <li class="wy-breadcrumbs-aside">
         
             
-            <a href="../_sources/auto_examples/plot_hyperparameters.rst.txt" rel="nofollow"> View page source</a>
+            <a href="../_sources/auto_examples/plot_ee.rst.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -180,47 +180,47 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="influence-of-hyperparameters">
-<span id="sphx-glr-auto-examples-plot-hyperparameters-py"></span><h1>Influence of hyperparameters<a class="headerlink" href="#influence-of-hyperparameters" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="showing-exposition-of-ee">
+<span id="sphx-glr-auto-examples-plot-ee-py"></span><h1>Showing Exposition of EE<a class="headerlink" href="#showing-exposition-of-ee" title="Permalink to this headline">¶</a></h1>
 <p>An example plot of <code class="xref py py-class docutils literal notranslate"><span class="pre">skltemplate.template.TemplateClassifier</span></code></p>
-<img alt="../_images/sphx_glr_plot_hyperparameters_001.png" class="align-center" src="../_images/sphx_glr_plot_hyperparameters_001.png" />
+<img alt="../_images/sphx_glr_plot_ee_001.png" class="align-center" src="../_images/sphx_glr_plot_ee_001.png" />
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
 <span class="kn">from</span> <span class="nn">numpy.testing</span> <span class="kn">import</span> <span class="n">assert_almost_equal</span>
 <span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="kn">import</span> <span class="n">make_moons</span>
 <span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">train_test_split</span>
 <span class="kn">from</span> <span class="nn">matplotlib</span> <span class="kn">import</span> <span class="n">pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+<span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="kn">import</span> <span class="n">load_breast_cancer</span><span class="p">,</span> <span class="n">load_iris</span>
 
-<span class="kn">from</span> <span class="nn">exposing</span> <span class="kn">import</span> <span class="n">Exposer</span>
+<span class="kn">import</span> <span class="nn">exposing</span>
 
-<span class="n">n_samples</span> <span class="o">=</span> <span class="mi">10000</span>
-<span class="n">ds</span> <span class="o">=</span> <span class="n">make_moons</span><span class="p">(</span><span class="n">noise</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">n_samples</span><span class="o">=</span><span class="n">n_samples</span><span class="p">)</span>
+<span class="n">ds</span> <span class="o">=</span> <span class="n">load_breast_cancer</span><span class="p">(</span><span class="n">return_X_y</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
 <span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">ds</span>
 <span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> \
     <span class="n">train_test_split</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=.</span><span class="mi">4</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
 
-<span class="n">grains</span> <span class="o">=</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="mi">64</span><span class="p">]</span>
-<span class="n">a_stepss</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">]</span>
+<span class="n">estimator</span> <span class="o">=</span> <span class="n">exposing</span><span class="o">.</span><span class="n">EE</span><span class="p">(</span><span class="n">a_steps</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">grain</span><span class="o">=</span><span class="mi">32</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">n_base</span><span class="o">=</span><span class="mi">25</span><span class="p">)</span>
+<span class="n">estimator</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
 
-<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">grains</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">a_stepss</span><span class="p">),</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
-<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">grain</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">grains</span><span class="p">):</span>
-    <span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="n">a_steps</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">a_stepss</span><span class="p">):</span>
-        <span class="n">clf</span> <span class="o">=</span> <span class="n">Exposer</span><span class="p">(</span><span class="n">a_steps</span><span class="o">=</span><span class="n">a_steps</span><span class="p">,</span> <span class="n">grain</span><span class="o">=</span><span class="n">grain</span><span class="p">)</span>
-        <span class="n">clf</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
-        <span class="n">score</span> <span class="o">=</span> <span class="n">clf</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X_test</span><span class="p">,</span> <span class="n">y_test</span><span class="p">)</span>
-        <span class="n">ax</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">clf</span><span class="o">.</span><span class="n">rgb</span><span class="p">())</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">xrange</span><span class="p">(</span><span class="mi">5</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">xrange</span><span class="p">(</span><span class="mi">5</span><span class="p">):</span>
+        <span class="n">index</span> <span class="o">=</span> <span class="n">i</span> <span class="o">+</span> <span class="n">j</span><span class="o">*</span><span class="mi">5</span>
+        <span class="n">ax</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">estimator</span><span class="o">.</span><span class="n">ensemble_</span><span class="p">[</span><span class="n">index</span><span class="p">]</span><span class="o">.</span><span class="n">rgb</span><span class="p">())</span>
+        <span class="n">ax</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%i</span><span class="s2"> - </span><span class="si">%s</span><span class="s2"> (</span><span class="si">%.2f</span><span class="s2">)&quot;</span> <span class="o">%</span> <span class="p">(</span>
+            <span class="n">index</span><span class="p">,</span>
+            <span class="n">estimator</span><span class="o">.</span><span class="n">subspaces_</span><span class="p">[</span><span class="n">index</span><span class="p">],</span>
+            <span class="n">estimator</span><span class="o">.</span><span class="n">thetas_</span><span class="p">[</span><span class="n">index</span><span class="p">]))</span>
         <span class="n">ax</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span><span class="o">.</span><span class="n">set_axis_off</span><span class="p">()</span>
-        <span class="n">ax</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;acc = </span><span class="si">%.3f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">score</span><span class="p">)</span>
 
-<span class="n">plt</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">&#39;off&#39;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
-<p><strong>Total running time of the script:</strong> ( 0 minutes  0.817 seconds)</p>
+<p><strong>Total running time of the script:</strong> ( 0 minutes  0.405 seconds)</p>
 <div class="sphx-glr-footer docutils container">
 <div class="sphx-glr-download docutils container">
-<a class="reference download internal" href="../_downloads/plot_hyperparameters.py" download=""><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_hyperparameters.py</span></code></a></div>
+<a class="reference download internal" href="../_downloads/plot_ee.py" download=""><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_ee.py</span></code></a></div>
 <div class="sphx-glr-download docutils container">
-<a class="reference download internal" href="../_downloads/plot_hyperparameters.ipynb" download=""><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_hyperparameters.ipynb</span></code></a></div>
+<a class="reference download internal" href="../_downloads/plot_ee.ipynb" download=""><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_ee.ipynb</span></code></a></div>
 </div>
 <p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.readthedocs.io">Gallery generated by Sphinx-Gallery</a></p>
 </div>
@@ -235,10 +235,10 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="plot_colorspace.html" class="btn btn-neutral float-right" title="Showing colorspace parameters of planar Exposer" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="plot_hyperparameters.html" class="btn btn-neutral float-right" title="Influence of hyperparameters" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="plot_ee.html" class="btn btn-neutral" title="Showing Exposition of EE" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="plot_exposer.html" class="btn btn-neutral" title="Showing Exposition of planar Exposer" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
