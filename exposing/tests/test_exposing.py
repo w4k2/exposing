@@ -4,7 +4,7 @@ from sklearn.datasets import make_circles, make_moons
 from sklearn.model_selection import train_test_split
 import warnings
 
-from exposing import Exposer, ECE
+from exposing import Exposer, EE
 
 
 def dataset():
