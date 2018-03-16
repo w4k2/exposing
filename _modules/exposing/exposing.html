@@ -214,8 +214,6 @@
 <span class="sd">        The labels passed during :meth:`fit`</span>
 <span class="sd">    theta_ : array, shape = [n_samples]</span>
 <span class="sd">        The labels passed during :meth:`fit`</span>
-<span class="sd">    thetas_ : array, shape = [n_samples]</span>
-<span class="sd">        The labels passed during :meth:`fit`</span>
 
 <span class="sd">    References</span>
 <span class="sd">    ----------</span>
@@ -344,8 +342,14 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_value</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model_</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_hsv</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dstack</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">_hue</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_saturation</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_value</span><span class="p">))</span>
 
+        <span class="bp">self</span><span class="o">.</span><span class="n">_calculate_measures</span><span class="p">()</span>
+
         <span class="c1"># Return the classifier</span></div>
         <span class="k">return</span> <span class="bp">self</span>
+
+    <span class="k">def</span> <span class="nf">_calculate_measures</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">treshold</span> <span class="o">=</span> <span class="o">.</span><span class="mi">7</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">theta_</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_saturation</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_value</span> <span class="o">&gt;</span> <span class="n">treshold</span><span class="p">])</span>
 
 <div class="viewcode-block" id="Exposer.locations"><a class="viewcode-back" href="../../exposing.html#exposing.Exposer.locations">[docs]</a>    <span class="k">def</span> <span class="nf">locations</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">subsamples</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Returning indices of exposer corresponding to given subsamples.</span>

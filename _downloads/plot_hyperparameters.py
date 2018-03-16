@@ -7,7 +7,7 @@ An example plot of :class:`skltemplate.template.TemplateClassifier`
 """
 import numpy as np
 from numpy.testing import assert_almost_equal
-from sklearn.datasets import make_circles, make_moons
+from sklearn.datasets import make_moons
 from sklearn.model_selection import train_test_split
 from matplotlib import pyplot as plt
 
