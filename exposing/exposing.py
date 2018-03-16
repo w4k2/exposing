@@ -6,8 +6,9 @@ from builtins import range
 import numpy as np
 from sklearn.base import BaseEstimator, ClassifierMixin
 from sklearn.utils.validation import check_X_y, check_array, check_is_fitted
+from sklearn.utils import check_random_state
 from sklearn.utils.multiclass import unique_labels
-from sklearn.utils.random import sample_without_replacement
+from sklearn.utils.random import sample_without_replacement as swr
 from sklearn.preprocessing import MinMaxScaler, LabelEncoder
 from medpy.filter.smoothing import anisotropic_diffusion
 import matplotlib.colors as colors
@@ -19,16 +20,18 @@ FUSERS = ('equal', 'theta')
 
 class EE(BaseEstimator, ClassifierMixin):
     def __init__(self, grain=16, a_steps=5, n_base=15, n_seek=30,
-                 approach='random', fuser='equal'):
+                 approach='random', fuser='equal', random_state=0):
         self.grain = grain
         self.a_steps = a_steps
         self.n_base = n_base
         self.n_seek = n_seek
         self.approach = approach
         self.fuser = fuser
+        self.random_state = random_state
 
     def fit(self, X, y):
         X, y = check_X_y(X, y)
+        random_state = check_random_state(self.random_state)
         self.X_ = X
         self.y_ = y
         self.n_features_ = X.shape[1]
@@ -43,7 +46,8 @@ class EE(BaseEstimator, ClassifierMixin):
         if self.approach == 'brutal':
             pass
         elif self.approach == 'random':
-            self.subspaces_ = [sample_without_replacement(self.n_features_, 2)
+            self.subspaces_ = [swr(self.n_features_, 2,
+                                   random_state=random_state)
                                for i in range(self.n_base)]
         elif self.approach == 'heuristic':
             pass
