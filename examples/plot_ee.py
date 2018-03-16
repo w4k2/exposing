@@ -25,7 +25,7 @@ estimator.fit(X_train, y_train)
 fig, ax = plt.subplots(5, 5, figsize=(10, 10))
 for i in xrange(5):
     for j in xrange(5):
-        index = i*j+j
+        index = i + j*5
         ax[i, j].imshow(estimator.ensemble_[index].rgb())
         ax[i, j].set_title("%i - %s (%.2f)" % (
             index,
