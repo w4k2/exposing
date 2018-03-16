@@ -20,7 +20,7 @@ FUSERS = ('equal', 'theta')
 
 class EE(BaseEstimator, ClassifierMixin):
     def __init__(self, grain=16, a_steps=5, n_base=15, n_seek=30,
-                 approach='random', fuser='equal', random_state=0):
+                 approach='random', fuser='theta', random_state=0):
         self.grain = grain
         self.a_steps = a_steps
         self.n_base = n_base
@@ -77,14 +77,17 @@ class EE(BaseEstimator, ClassifierMixin):
             raise ValueError('number of features does not match')
 
         # Establish signatures
-        ensemble_signatures = [clf.signatures(X) for clf in self.ensemble_]
+        signatures = [clf.signatures(X) for clf in self.ensemble_]
 
         # Acquire supports
         supports = None
         if self.fuser == 'equal':
-            supports = np.sum(ensemble_signatures, axis=0)
+            supports = np.sum(signatures, axis=0)
         elif self.fuser == 'theta':
-            pass
+            weighted_signatures = signatures * self.thetas_[:,
+                                                            np.newaxis,
+                                                            np.newaxis]
+            supports = np.sum(weighted_signatures, axis=0)
 
         # Predict and decode prediction
         prediction = np.argmax(supports, axis=1)
