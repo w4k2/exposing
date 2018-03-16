@@ -31,9 +31,9 @@ class Exposer(BaseEstimator, ClassifierMixin):
         Indices of dataset subspace used to calculate exposer. (the default is
         usage of last two features).
     grain : int, optional
-        Number of bins dividing every dimension (the default is `16`).
+        Number of bins dividing every dimension (the default is ``16``).
     a_steps : int, optional
-        Number of steps of anisotropic diffusion (the default is `5`).
+        Number of steps of anisotropic diffusion (the default is ``5``).
 
     Attributes
     ----------
@@ -41,14 +41,19 @@ class Exposer(BaseEstimator, ClassifierMixin):
         The input passed during :meth:`fit`
     y_ : array, shape = [n_samples]
         The labels passed during :meth:`fit`
+    theta_ : array, shape = [n_samples]
+        The labels passed during :meth:`fit`
+    thetas_ : array, shape = [n_samples]
+        The labels passed during :meth:`fit`
 
     References
     ----------
-    .. [1] O. McNoleg, "The integration of GIS, remote sensing,
-       expert systems and adaptive co-kriging for environmental habitat
-       modelling of the Highland Haggis using object-oriented, fuzzy-logic
-       and neural-network techniques," Computers & Geosciences, vol. 22,
-       pp. 585-588, 1996.
+    .. [1] Ksieniewicz, P., Grana, M., Wozniak, M. (2017). Paired feature
+       multilayer ensemble – concept and evaluation of a classifier. Journal of
+       Intelligent and Fuzzy Systems,  32(2), 1427–1436.
+    .. [2] Perona, P., & Malik, J. (1990). Scale-space and edge detection using
+       anisotropic diffusion. IEEE Transactions on Pattern Analysis and Machine
+       Intelligence, 12(7), 629–639.
     """
 
     def __init__(self, given_subspace=None, grain=16, a_steps=5):
