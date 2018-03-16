@@ -15,7 +15,7 @@ import warnings
 APPROACHES = ('brutal', 'random', 'heuristic')
 
 
-class ECE(BaseEstimator, ClassifierMixin):
+class EE(BaseEstimator, ClassifierMixin):
     def __init__(self, given_subspace=None, grain=16, a_steps=5):
         warnings.warn("ECE INIT")
         self.given_subspace = given_subspace

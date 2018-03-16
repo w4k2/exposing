@@ -31,5 +31,5 @@ def test_rgb():
 
 def test_ece():
     X_train, X_test, y_train, y_test = dataset()
-    estimator = ECE()
+    estimator = EE()
     estimator.fit(X_train, y_train)
