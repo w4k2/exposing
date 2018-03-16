@@ -43,8 +43,6 @@ class Exposer(BaseEstimator, ClassifierMixin):
         The labels passed during :meth:`fit`
     theta_ : array, shape = [n_samples]
         The labels passed during :meth:`fit`
-    thetas_ : array, shape = [n_samples]
-        The labels passed during :meth:`fit`
 
     References
     ----------
@@ -173,8 +171,14 @@ class Exposer(BaseEstimator, ClassifierMixin):
         self._value = np.max(self.model_, axis=2)
         self._hsv = np.dstack((self._hue, self._saturation, self._value))
 
+        self._calculate_measures()
+
         # Return the classifier
         return self
+
+    def _calculate_measures(self):
+        treshold = .7
+        self.theta_ = np.mean(self._saturation[self._value > treshold])
 
     def locations(self, subsamples):
         """Returning indices of exposer corresponding to given subsamples.
