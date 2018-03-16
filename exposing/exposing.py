@@ -41,8 +41,8 @@ class Exposer(BaseEstimator, ClassifierMixin):
         The input passed during :meth:`fit`
     y_ : array, shape = [n_samples]
         The labels passed during :meth:`fit`
-    theta_ : array, shape = [n_samples]
-        The labels passed during :meth:`fit`
+    theta_ : float
+        Mean saturation of informative pixels of exposer.
 
     References
     ----------
