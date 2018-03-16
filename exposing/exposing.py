@@ -49,11 +49,11 @@ class Exposer(BaseEstimator, ClassifierMixin):
     References
     ----------
     .. [1] Ksieniewicz, P., Grana, M., Wozniak, M. (2017). Paired feature
-       multilayer ensemble – concept and evaluation of a classifier. Journal of
-       Intelligent and Fuzzy Systems,  32(2), 1427–1436.
-    .. [2] Perona, P., & Malik, J. (1990). Scale-space and edge detection using
+       multilayer ensemble - concept and evaluation of a classifier. Journal of
+       Intelligent and Fuzzy Systems,  32(2), 1427-1436.
+    .. [2] Perona, P., Malik, J. (1990). Scale-space and edge detection using
        anisotropic diffusion. IEEE Transactions on Pattern Analysis and Machine
-       Intelligence, 12(7), 629–639.
+       Intelligence, 12(7), 629-639.
     """
 
     def __init__(self, given_subspace=None, grain=16, a_steps=5):
