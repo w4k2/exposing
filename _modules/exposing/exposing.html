@@ -260,8 +260,8 @@
 
         <span class="c1"># Predict</span>
         <span class="n">prediction</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">supports</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-</div>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">classes_</span><span class="p">[</span><span class="n">prediction</span><span class="p">]</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">classes_</span><span class="p">[</span><span class="n">prediction</span><span class="p">]</span></div>
 
 
 <div class="viewcode-block" id="Exposer"><a class="viewcode-back" href="../../exposing.html#exposing.Exposer">[docs]</a><span class="k">class</span> <span class="nc">Exposer</span><span class="p">(</span><span class="n">BaseEstimator</span><span class="p">,</span> <span class="n">ClassifierMixin</span><span class="p">):</span>
@@ -319,8 +319,8 @@
 <span class="sd">        array_like : array of float of shape = [grain, grain, n_classes]</span>
 <span class="sd">            A complete, fitted model of exposer.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">check_is_fitted</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;X_&#39;</span><span class="p">,</span> <span class="s1">&#39;y_&#39;</span><span class="p">,</span> <span class="s1">&#39;model_&#39;</span><span class="p">])</span></div>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_</span>
+        <span class="n">check_is_fitted</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;X_&#39;</span><span class="p">,</span> <span class="s1">&#39;y_&#39;</span><span class="p">,</span> <span class="s1">&#39;model_&#39;</span><span class="p">])</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_</span></div>
 
 <div class="viewcode-block" id="Exposer.hsv"><a class="viewcode-back" href="../../exposing.html#exposing.Exposer.hsv">[docs]</a>    <span class="k">def</span> <span class="nf">hsv</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Returning a HSV representation of fitted exposer.</span>
@@ -331,8 +331,8 @@
 <span class="sd">            The label for each sample is the label of the closest sample seen</span>
 <span class="sd">             during fit.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">check_is_fitted</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;X_&#39;</span><span class="p">,</span> <span class="s1">&#39;y_&#39;</span><span class="p">,</span> <span class="s1">&#39;model_&#39;</span><span class="p">])</span></div>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_hsv</span>
+        <span class="n">check_is_fitted</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;X_&#39;</span><span class="p">,</span> <span class="s1">&#39;y_&#39;</span><span class="p">,</span> <span class="s1">&#39;model_&#39;</span><span class="p">])</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_hsv</span></div>
 
 <div class="viewcode-block" id="Exposer.rgb"><a class="viewcode-back" href="../../exposing.html#exposing.Exposer.rgb">[docs]</a>    <span class="k">def</span> <span class="nf">rgb</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Returning a HSV to RGB visualization of fitted exposer.</span>
@@ -344,8 +344,8 @@
 <span class="sd">             during fit.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">check_is_fitted</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;X_&#39;</span><span class="p">,</span> <span class="s1">&#39;y_&#39;</span><span class="p">,</span> <span class="s1">&#39;model_&#39;</span><span class="p">])</span>
-        <span class="n">rgb</span> <span class="o">=</span> <span class="n">colors</span><span class="o">.</span><span class="n">hsv_to_rgb</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_hsv</span><span class="p">)</span></div>
-        <span class="k">return</span> <span class="n">rgb</span>
+        <span class="n">rgb</span> <span class="o">=</span> <span class="n">colors</span><span class="o">.</span><span class="n">hsv_to_rgb</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_hsv</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">rgb</span></div>
 
 <div class="viewcode-block" id="Exposer.fit"><a class="viewcode-back" href="../../exposing.html#exposing.Exposer.fit">[docs]</a>    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;A fitting function for a classifier.</span>
@@ -422,8 +422,8 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_calculate_measures</span><span class="p">()</span>
 
-        <span class="c1"># Return the classifier</span></div>
-        <span class="k">return</span> <span class="bp">self</span>
+        <span class="c1"># Return the classifier</span>
+        <span class="k">return</span> <span class="bp">self</span></div>
 
     <span class="k">def</span> <span class="nf">_calculate_measures</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">treshold</span> <span class="o">=</span> <span class="o">.</span><span class="mi">7</span>
@@ -445,8 +445,8 @@
         <span class="n">transformed_subsamples</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">scaler_</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">subsamples</span><span class="p">)</span>
         <span class="n">locations</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span>
             <span class="n">np</span><span class="o">.</span><span class="n">rint</span><span class="p">(</span><span class="n">transformed_subsamples</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">grain</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;int64&#39;</span><span class="p">),</span>
-            <span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">grain</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span></div>
-        <span class="k">return</span> <span class="n">locations</span>
+            <span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">grain</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">locations</span></div>
 
 <div class="viewcode-block" id="Exposer.signatures"><a class="viewcode-back" href="../../exposing.html#exposing.Exposer.signatures">[docs]</a>    <span class="k">def</span> <span class="nf">signatures</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Returning signatures corresponding to given samples from exposed model</span>
@@ -466,8 +466,8 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">subspaced_X</span> <span class="o">=</span> <span class="n">X</span><span class="p">[:,</span> <span class="bp">self</span><span class="o">.</span><span class="n">subspace_</span><span class="p">]</span>
         <span class="n">locations</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">locations</span><span class="p">(</span><span class="n">subspaced_X</span><span class="p">)</span>
-        <span class="n">supports</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_</span><span class="p">[</span><span class="n">locations</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">locations</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">:]</span></div>
-        <span class="k">return</span> <span class="n">supports</span>
+        <span class="n">supports</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_</span><span class="p">[</span><span class="n">locations</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">locations</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">:]</span>
+        <span class="k">return</span> <span class="n">supports</span></div>
 
 <div class="viewcode-block" id="Exposer.predict_proba"><a class="viewcode-back" href="../../exposing.html#exposing.Exposer.predict_proba">[docs]</a>    <span class="k">def</span> <span class="nf">predict_proba</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;A reference implementation of a prediction for a classifier.</span>
@@ -496,8 +496,8 @@
         <span class="n">sums</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">signatures</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
         <span class="n">sums</span><span class="p">[</span><span class="n">sums</span> <span class="o">==</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
         <span class="n">signatures</span> <span class="o">/=</span> <span class="n">sums</span><span class="p">[:,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span>
-</div>
-        <span class="k">return</span> <span class="n">signatures</span>
+
+        <span class="k">return</span> <span class="n">signatures</span></div>
 
 <div class="viewcode-block" id="Exposer.predict"><a class="viewcode-back" href="../../exposing.html#exposing.Exposer.predict">[docs]</a>    <span class="k">def</span> <span class="nf">predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;A reference implementation of a prediction for a classifier.</span>
@@ -523,8 +523,8 @@
 
         <span class="n">signatures</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">signatures</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
         <span class="n">prediction</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">signatures</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-</div></div>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">classes_</span><span class="p">[</span><span class="n">prediction</span><span class="p">]</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">classes_</span><span class="p">[</span><span class="n">prediction</span><span class="p">]</span></div></div>
 </pre></div>
 
            </div>
