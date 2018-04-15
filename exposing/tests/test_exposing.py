@@ -3,7 +3,6 @@ from numpy.testing import assert_almost_equal
 from sklearn.datasets import make_circles, make_moons, load_breast_cancer
 from sklearn.model_selection import train_test_split
 import warnings
-
 from exposing import Exposer, EE
 
 
