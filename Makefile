@@ -16,3 +16,7 @@ install: clean
 	cat files.txt | xargs rm -rf
 	rm files.txt
 	python setup.py install --force
+
+upload:
+	python setup.py sdist upload -r pypi
+	# pip install --upgrade stream-learn
