@@ -25,30 +25,20 @@
   
 
   
-  
     <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-  
-
-  
-    <link rel="stylesheet" href="_static/gallery.css" type="text/css" />
-  
-
-  
-        <link rel="author" title="About these documents"
-              href="about.html"/>
-        <link rel="index" title="Index"
-              href="genindex.html"/>
-        <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="exposing 0.1.0 documentation" href="index.html"/>
-        <link rel="up" title="API Documentation" href="api.html"/>
-        <link rel="prev" title="API Documentation" href="api.html"/> 
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/gallery.css" type="text/css" />
+    <link rel="author" title="About these documents" href="about.html" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="API Documentation" href="api.html" /> 
 
   
   <script src="_static/js/modernizr.min.js"></script>
 
 </head>
 
-<body class="wy-body-for-nav" role="document">
+<body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
@@ -122,7 +112,7 @@
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
 
       
-      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+      <nav class="wy-nav-top" aria-label="top navigation">
         
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="index.html">exposing</a>
@@ -130,9 +120,10 @@
       </nav>
 
 
-      
       <div class="wy-nav-content">
+        
         <div class="rst-content">
+        
           
 
 
@@ -187,19 +178,18 @@
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>given_subspace</strong> : tuple, optional, shape = [2]</p>
-<blockquote>
-<div><p>Indices of dataset subspace used to calculate exposer. (the default is
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>given_subspace</strong> <span class="classifier-delimiter">:</span> <span class="classifier">tuple, optional, shape = [2]</span></dt>
+<dd><p class="first last">Indices of dataset subspace used to calculate exposer. (the default is
 usage of last two features).</p>
-</div></blockquote>
-<p><strong>grain</strong> : int, optional</p>
-<blockquote>
-<div><p>Number of bins dividing every dimension (the default is <code class="docutils literal notranslate"><span class="pre">16</span></code>).</p>
-</div></blockquote>
-<p><strong>a_steps</strong> : int, optional</p>
-<blockquote class="last">
-<div><p>Number of steps of anisotropic diffusion (the default is <code class="docutils literal notranslate"><span class="pre">5</span></code>).</p>
-</div></blockquote>
+</dd>
+<dt><strong>grain</strong> <span class="classifier-delimiter">:</span> <span class="classifier">int, optional</span></dt>
+<dd><p class="first last">Number of bins dividing every dimension (the default is <code class="docutils literal notranslate"><span class="pre">16</span></code>).</p>
+</dd>
+<dt><strong>a_steps</strong> <span class="classifier-delimiter">:</span> <span class="classifier">int, optional</span></dt>
+<dd><p class="first last">Number of steps of anisotropic diffusion (the default is <code class="docutils literal notranslate"><span class="pre">5</span></code>).</p>
+</dd>
+</dl>
 </td>
 </tr>
 </tbody>
@@ -213,37 +203,38 @@ velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat
 cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id
 est laborum.</p>
 <p class="rubric">References</p>
-<table class="docutils citation" frame="void" id="r1" rules="none">
+<table class="docutils citation" frame="void" id="ra89227a0bc71-1" rules="none">
 <colgroup><col class="label" /><col /></colgroup>
 <tbody valign="top">
-<tr><td class="label"><a class="fn-backref" href="#id1">[R1]</a></td><td>Ksieniewicz, P., Grana, M., Wozniak, M. (2017). Paired feature
+<tr><td class="label"><a class="fn-backref" href="#id1">[1]</a></td><td>Ksieniewicz, P., Grana, M., Wozniak, M. (2017). Paired feature
 multilayer ensemble - concept and evaluation of a classifier. Journal of
 Intelligent and Fuzzy Systems,  32(2), 1427-1436.</td></tr>
 </tbody>
 </table>
-<table class="docutils citation" frame="void" id="r2" rules="none">
+<table class="docutils citation" frame="void" id="ra89227a0bc71-2" rules="none">
 <colgroup><col class="label" /><col /></colgroup>
 <tbody valign="top">
-<tr><td class="label"><a class="fn-backref" href="#id2">[R2]</a></td><td>Perona, P., Malik, J. (1990). Scale-space and edge detection using
+<tr><td class="label"><a class="fn-backref" href="#id2">[2]</a></td><td>Perona, P., Malik, J. (1990). Scale-space and edge detection using
 anisotropic diffusion. IEEE Transactions on Pattern Analysis and Machine
 Intelligence, 12(7), 629-639.</td></tr>
 </tbody>
 </table>
-<p class="rubric">Attributes</p>
-<table border="1" class="docutils">
-<colgroup>
-<col width="12%" />
-<col width="88%" />
-</colgroup>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
 <tbody valign="top">
-<tr class="row-odd"><td><strong>X_</strong></td>
-<td>(array, shape = [n_samples, n_features]) The input passed during <a class="reference internal" href="#exposing.Exposer.fit" title="exposing.Exposer.fit"><code class="xref py py-meth docutils literal notranslate"><span class="pre">fit()</span></code></a></td>
-</tr>
-<tr class="row-even"><td><strong>y_</strong></td>
-<td>(array, shape = [n_samples]) The labels passed during <a class="reference internal" href="#exposing.Exposer.fit" title="exposing.Exposer.fit"><code class="xref py py-meth docutils literal notranslate"><span class="pre">fit()</span></code></a></td>
-</tr>
-<tr class="row-odd"><td><strong>theta_</strong></td>
-<td>(float) Mean saturation of informative pixels of exposer.</td>
+<tr class="field-odd field"><th class="field-name">Attributes:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>X_</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array, shape = [n_samples, n_features]</span></dt>
+<dd><p class="first last">The input passed during <a class="reference internal" href="#exposing.Exposer.fit" title="exposing.Exposer.fit"><code class="xref py py-meth docutils literal notranslate"><span class="pre">fit()</span></code></a></p>
+</dd>
+<dt><strong>y_</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array, shape = [n_samples]</span></dt>
+<dd><p class="first last">The labels passed during <a class="reference internal" href="#exposing.Exposer.fit" title="exposing.Exposer.fit"><code class="xref py py-meth docutils literal notranslate"><span class="pre">fit()</span></code></a></p>
+</dd>
+<dt><strong>theta_</strong> <span class="classifier-delimiter">:</span> <span class="classifier">float</span></dt>
+<dd><p class="first last">Mean saturation of informative pixels of exposer.</p>
+</dd>
+</dl>
+</td>
 </tr>
 </tbody>
 </table>
@@ -297,20 +288,21 @@ Intelligence, 12(7), 629-639.</td></tr>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>X</strong> : array-like, shape = [n_samples, n_features]</p>
-<blockquote>
-<div><p>The training input samples.</p>
-</div></blockquote>
-<p><strong>y</strong> : array-like, shape = [n_samples]</p>
-<blockquote>
-<div><p>The target values. An array of int.</p>
-</div></blockquote>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>X</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array-like, shape = [n_samples, n_features]</span></dt>
+<dd><p class="first last">The training input samples.</p>
+</dd>
+<dt><strong>y</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array-like, shape = [n_samples]</span></dt>
+<dd><p class="first last">The target values. An array of int.</p>
+</dd>
+</dl>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>self</strong> : object</p>
-<blockquote class="last">
-<div><p>Returns self.</p>
-</div></blockquote>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>self</strong> <span class="classifier-delimiter">:</span> <span class="classifier">object</span></dt>
+<dd><p class="first last">Returns self.</p>
+</dd>
+</dl>
 </td>
 </tr>
 </tbody>
@@ -325,14 +317,15 @@ Intelligence, 12(7), 629-639.</td></tr>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>array_like</strong> : array of float of shape = [grain, grain, 3]</p>
-<blockquote class="last">
-<div><dl class="docutils">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>array_like</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array of float of shape = [grain, grain, 3]</span></dt>
+<dd><dl class="first last docutils">
 <dt>The label for each sample is the label of the closest sample seen</dt>
 <dd><p class="first last">during fit.</p>
 </dd>
 </dl>
-</div></blockquote>
+</dd>
+</dl>
 </td>
 </tr>
 </tbody>
@@ -347,16 +340,18 @@ Intelligence, 12(7), 629-639.</td></tr>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>subsamples</strong> : array-like, shape = [n_samples, n_features]</p>
-<blockquote>
-<div><p>The training input samples.</p>
-</div></blockquote>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>subsamples</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array-like, shape = [n_samples, n_features]</span></dt>
+<dd><p class="first last">The training input samples.</p>
+</dd>
+</dl>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>locations</strong> : array-like</p>
-<blockquote class="last">
-<div><p>Indices for given samples</p>
-</div></blockquote>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>locations</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array-like</span></dt>
+<dd><p class="first last">Indices for given samples</p>
+</dd>
+</dl>
 </td>
 </tr>
 </tbody>
@@ -371,10 +366,11 @@ Intelligence, 12(7), 629-639.</td></tr>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>array_like</strong> : array of float of shape = [grain, grain, n_classes]</p>
-<blockquote class="last">
-<div><p>A complete, fitted model of exposer.</p>
-</div></blockquote>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>array_like</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array of float of shape = [grain, grain, n_classes]</span></dt>
+<dd><p class="first last">A complete, fitted model of exposer.</p>
+</dd>
+</dl>
 </td>
 </tr>
 </tbody>
@@ -389,17 +385,19 @@ Intelligence, 12(7), 629-639.</td></tr>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>X</strong> : array-like of shape = [n_samples, n_features]</p>
-<blockquote>
-<div><p>The input samples.</p>
-</div></blockquote>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>X</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array-like of shape = [n_samples, n_features]</span></dt>
+<dd><p class="first last">The input samples.</p>
+</dd>
+</dl>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>y</strong> : array of int of shape = [n_samples]</p>
-<blockquote class="last">
-<div><p>The label for each sample is the label of the closest sample
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>y</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array of int of shape = [n_samples]</span></dt>
+<dd><p class="first last">The label for each sample is the label of the closest sample
 seen udring fit.</p>
-</div></blockquote>
+</dd>
+</dl>
 </td>
 </tr>
 </tbody>
@@ -414,17 +412,19 @@ seen udring fit.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>X</strong> : array-like of shape = [n_samples, n_features]</p>
-<blockquote>
-<div><p>The input samples.</p>
-</div></blockquote>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>X</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array-like of shape = [n_samples, n_features]</span></dt>
+<dd><p class="first last">The input samples.</p>
+</dd>
+</dl>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>y</strong> : array of int of shape = [n_samples]</p>
-<blockquote class="last">
-<div><p>The label for each sample is the label of the closest sample
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>y</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array of int of shape = [n_samples]</span></dt>
+<dd><p class="first last">The label for each sample is the label of the closest sample
 seen udring fit.</p>
-</div></blockquote>
+</dd>
+</dl>
 </td>
 </tr>
 </tbody>
@@ -439,14 +439,15 @@ seen udring fit.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>array_like</strong> : array of float of shape = [grain, grain, 3]</p>
-<blockquote class="last">
-<div><dl class="docutils">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>array_like</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array of float of shape = [grain, grain, 3]</span></dt>
+<dd><dl class="first last docutils">
 <dt>The label for each sample is the label of the closest sample seen</dt>
 <dd><p class="first last">during fit.</p>
 </dd>
 </dl>
-</div></blockquote>
+</dd>
+</dl>
 </td>
 </tr>
 </tbody>
@@ -461,20 +462,21 @@ seen udring fit.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>X</strong> : array-like, shape = [n_samples, n_features]</p>
-<blockquote>
-<div><p>The training input samples.</p>
-</div></blockquote>
-<p><strong>y</strong> : array-like, shape = [n_samples]</p>
-<blockquote>
-<div><p>The target values. An array of int.</p>
-</div></blockquote>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>X</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array-like, shape = [n_samples, n_features]</span></dt>
+<dd><p class="first last">The training input samples.</p>
+</dd>
+<dt><strong>y</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array-like, shape = [n_samples]</span></dt>
+<dd><p class="first last">The target values. An array of int.</p>
+</dd>
+</dl>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>self</strong> : object</p>
-<blockquote class="last">
-<div><p>Returns self.</p>
-</div></blockquote>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>self</strong> <span class="classifier-delimiter">:</span> <span class="classifier">object</span></dt>
+<dd><p class="first last">Returns self.</p>
+</dd>
+</dl>
 </td>
 </tr>
 </tbody>
@@ -493,14 +495,8 @@ seen udring fit.</p>
 <col width="90%" />
 </colgroup>
 <tbody valign="top">
-<tr class="row-odd"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">fit</span></code>(X,&nbsp;y)</td>
-<td></td>
-</tr>
-<tr class="row-even"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_params</span></code>([deep])</td>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_params</span></code>([deep])</td>
 <td>Get parameters for this estimator.</td>
-</tr>
-<tr class="row-odd"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">predict</span></code>(X)</td>
-<td></td>
 </tr>
 <tr class="row-even"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">score</span></code>(X,&nbsp;y[,&nbsp;sample_weight])</td>
 <td>Returns the mean accuracy on the given test data and labels.</td>
@@ -510,15 +506,27 @@ seen udring fit.</p>
 </tr>
 </tbody>
 </table>
+<table border="1" class="docutils">
+<colgroup>
+<col width="52%" />
+<col width="48%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><strong>fit</strong></td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td><strong>predict</strong></td>
+<td>&#160;</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 </div>
 
 
            </div>
-           <div class="articleComments">
-            
-           </div>
+           
           </div>
           <footer>
   
@@ -538,7 +546,7 @@ seen udring fit.</p>
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -557,6 +565,7 @@ seen udring fit.</p>
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
             VERSION:'0.1.0',
+            LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,
@@ -574,14 +583,13 @@ seen udring fit.</p>
     <script type="text/javascript" src="_static/js/theme.js"></script>
   
 
-  
-  
   <script type="text/javascript">
       jQuery(function () {
-          SphinxRtdTheme.StickyNav.enable();
+          
+          SphinxRtdTheme.Navigation.enableSticky();
+          
       });
-  </script>
-   
+  </script> 
 
 </body>
 </html>
