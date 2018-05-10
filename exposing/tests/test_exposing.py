@@ -17,7 +17,6 @@ def breast_dataset():
     X, y = load_breast_cancer(return_X_y=True)
     return train_test_split(X, y, test_size=.4, random_state=42)
 
-"""
 def test_given_subspace():
     X_train, X_test, y_train, y_test = dataset()
     estimator = Exposer(given_subspace=(0, 1))
@@ -38,7 +37,6 @@ def test_ece():
         estimator = EE(fuser=fuser)
         estimator.fit(X_train, y_train)
         score = estimator.score(X_test, y_test)
-"""
 
 def test_approaches():
     X_train, X_test, y_train, y_test = breast_dataset()
@@ -54,8 +52,6 @@ def test_approaches():
         stop = timeit.default_timer()
         print(stop - start)
 
-
-    assert(False)
 
 # 435
 # 0,001565517241
