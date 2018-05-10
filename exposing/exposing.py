@@ -13,8 +13,9 @@ from sklearn.utils.random import sample_without_replacement as swr
 from sklearn.preprocessing import MinMaxScaler
 from medpy.filter.smoothing import anisotropic_diffusion
 import matplotlib.colors as colors
+import itertools
 
-APPROACHES = ('brutal', 'random', 'heuristic')
+APPROACHES = ('brutal', 'random', 'mst')
 FUSERS = ('equal', 'theta')
 
 
@@ -41,14 +42,17 @@ class EE(BaseEstimator, ClassifierMixin):
 
         # Establish set of subspaces
         self.subspaces_ = None
+        # print("Method is %s" % self.approach)
         if self.approach == 'brutal':
+            self.subspaces_ = list(itertools.combinations(range(self.n_features_), 2))
             pass
         elif self.approach == 'random':
             self.subspaces_ = [swr(self.n_features_, 2,
                                    random_state=random_state)
                                for i in range(self.n_base)]
-        elif self.approach == 'heuristic':
+        elif self.approach == 'mst':
             pass
+        # print("Choosen subspaces: %s" % self.subspaces_)
 
         # Compose ensemble
         self.ensemble_ = [Exposer(grain=self.grain,
