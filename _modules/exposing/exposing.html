@@ -173,8 +173,9 @@
 <span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="k">import</span> <span class="n">MinMaxScaler</span>
 <span class="kn">from</span> <span class="nn">medpy.filter.smoothing</span> <span class="k">import</span> <span class="n">anisotropic_diffusion</span>
 <span class="kn">import</span> <span class="nn">matplotlib.colors</span> <span class="k">as</span> <span class="nn">colors</span>
+<span class="kn">import</span> <span class="nn">itertools</span>
 
-<span class="n">APPROACHES</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;brutal&#39;</span><span class="p">,</span> <span class="s1">&#39;random&#39;</span><span class="p">,</span> <span class="s1">&#39;heuristic&#39;</span><span class="p">)</span>
+<span class="n">APPROACHES</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;brutal&#39;</span><span class="p">,</span> <span class="s1">&#39;random&#39;</span><span class="p">,</span> <span class="s1">&#39;mst&#39;</span><span class="p">)</span>
 <span class="n">FUSERS</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;equal&#39;</span><span class="p">,</span> <span class="s1">&#39;theta&#39;</span><span class="p">)</span>
 
 
@@ -201,14 +202,17 @@
 
         <span class="c1"># Establish set of subspaces</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">subspaces_</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="c1"># print(&quot;Method is %s&quot; % self.approach)</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">approach</span> <span class="o">==</span> <span class="s1">&#39;brutal&#39;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">subspaces_</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">itertools</span><span class="o">.</span><span class="n">combinations</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n_features_</span><span class="p">),</span> <span class="mi">2</span><span class="p">))</span>
             <span class="k">pass</span>
         <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">approach</span> <span class="o">==</span> <span class="s1">&#39;random&#39;</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">subspaces_</span> <span class="o">=</span> <span class="p">[</span><span class="n">swr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n_features_</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span>
                                    <span class="n">random_state</span><span class="o">=</span><span class="n">random_state</span><span class="p">)</span>
                                <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n_base</span><span class="p">)]</span>
-        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">approach</span> <span class="o">==</span> <span class="s1">&#39;heuristic&#39;</span><span class="p">:</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">approach</span> <span class="o">==</span> <span class="s1">&#39;mst&#39;</span><span class="p">:</span>
             <span class="k">pass</span>
+        <span class="c1"># print(&quot;Choosen subspaces: %s&quot; % self.subspaces_)</span>
 
         <span class="c1"># Compose ensemble</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ensemble_</span> <span class="o">=</span> <span class="p">[</span><span class="n">Exposer</span><span class="p">(</span><span class="n">grain</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">grain</span><span class="p">,</span>
@@ -569,9 +573,7 @@
 
   <script type="text/javascript">
       jQuery(function () {
-          
-          SphinxRtdTheme.Navigation.enableSticky();
-          
+          SphinxRtdTheme.Navigation.enable(true);
       });
   </script> 
 
