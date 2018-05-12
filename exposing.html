@@ -173,7 +173,7 @@
 <span class="target" id="module-exposing"></span><dl class="class">
 <dt id="exposing.Exposer">
 <em class="property">class </em><code class="descclassname">exposing.</code><code class="descname">Exposer</code><span class="sig-paren">(</span><em>given_subspace=None</em>, <em>grain=16</em>, <em>a_steps=5</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/exposing/exposing.html#Exposer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#exposing.Exposer" title="Permalink to this definition">¶</a></dt>
-<dd><p>A classifier using basic, planar exposer.</p>
+<dd><p>A using basic, planar exposer usable for classification of datasets limited to two features.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -211,14 +211,6 @@ multilayer ensemble - concept and evaluation of a classifier. Journal of
 Intelligent and Fuzzy Systems,  32(2), 1427-1436.</td></tr>
 </tbody>
 </table>
-<table class="docutils citation" frame="void" id="ra89227a0bc71-2" rules="none">
-<colgroup><col class="label" /><col /></colgroup>
-<tbody valign="top">
-<tr><td class="label"><a class="fn-backref" href="#id2">[2]</a></td><td>Perona, P., Malik, J. (1990). Scale-space and edge detection using
-anisotropic diffusion. IEEE Transactions on Pattern Analysis and Machine
-Intelligence, 12(7), 629-639.</td></tr>
-</tbody>
-</table>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -254,28 +246,31 @@ Intelligence, 12(7), 629-639.</td></tr>
 <tr class="row-odd"><td><a class="reference internal" href="#exposing.Exposer.hsv" title="exposing.Exposer.hsv"><code class="xref py py-obj docutils literal notranslate"><span class="pre">hsv</span></code></a>()</td>
 <td>Returning a HSV representation of fitted exposer.</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#exposing.Exposer.locations" title="exposing.Exposer.locations"><code class="xref py py-obj docutils literal notranslate"><span class="pre">locations</span></code></a>(subsamples)</td>
+<tr class="row-even"><td><a class="reference internal" href="#exposing.Exposer.inverse_locations" title="exposing.Exposer.inverse_locations"><code class="xref py py-obj docutils literal notranslate"><span class="pre">inverse_locations</span></code></a>(locations)</td>
 <td>Returning indices of exposer corresponding to given subsamples.</td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#exposing.Exposer.model" title="exposing.Exposer.model"><code class="xref py py-obj docutils literal notranslate"><span class="pre">model</span></code></a>()</td>
+<tr class="row-odd"><td><a class="reference internal" href="#exposing.Exposer.locations" title="exposing.Exposer.locations"><code class="xref py py-obj docutils literal notranslate"><span class="pre">locations</span></code></a>(subsamples)</td>
+<td>Returning indices of exposer corresponding to given subsamples.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#exposing.Exposer.model" title="exposing.Exposer.model"><code class="xref py py-obj docutils literal notranslate"><span class="pre">model</span></code></a>()</td>
 <td>Returning a model of fitted exposer.</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#exposing.Exposer.predict" title="exposing.Exposer.predict"><code class="xref py py-obj docutils literal notranslate"><span class="pre">predict</span></code></a>(X)</td>
+<tr class="row-odd"><td><a class="reference internal" href="#exposing.Exposer.predict" title="exposing.Exposer.predict"><code class="xref py py-obj docutils literal notranslate"><span class="pre">predict</span></code></a>(X)</td>
 <td>A reference implementation of a prediction for a classifier.</td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#exposing.Exposer.predict_proba" title="exposing.Exposer.predict_proba"><code class="xref py py-obj docutils literal notranslate"><span class="pre">predict_proba</span></code></a>(X)</td>
+<tr class="row-even"><td><a class="reference internal" href="#exposing.Exposer.predict_proba" title="exposing.Exposer.predict_proba"><code class="xref py py-obj docutils literal notranslate"><span class="pre">predict_proba</span></code></a>(X)</td>
 <td>A reference implementation of a prediction for a classifier.</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#exposing.Exposer.rgb" title="exposing.Exposer.rgb"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rgb</span></code></a>()</td>
+<tr class="row-odd"><td><a class="reference internal" href="#exposing.Exposer.rgb" title="exposing.Exposer.rgb"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rgb</span></code></a>()</td>
 <td>Returning a HSV to RGB visualization of fitted exposer.</td>
 </tr>
-<tr class="row-odd"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">score</span></code>(X,&nbsp;y[,&nbsp;sample_weight])</td>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">score</span></code>(X,&nbsp;y[,&nbsp;sample_weight])</td>
 <td>Returns the mean accuracy on the given test data and labels.</td>
 </tr>
-<tr class="row-even"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_params</span></code>(**params)</td>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_params</span></code>(**params)</td>
 <td>Set the parameters of this estimator.</td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#exposing.Exposer.signatures" title="exposing.Exposer.signatures"><code class="xref py py-obj docutils literal notranslate"><span class="pre">signatures</span></code></a>(X)</td>
+<tr class="row-even"><td><a class="reference internal" href="#exposing.Exposer.signatures" title="exposing.Exposer.signatures"><code class="xref py py-obj docutils literal notranslate"><span class="pre">signatures</span></code></a>(X)</td>
 <td>Returning signatures corresponding to given samples from exposed model</td>
 </tr>
 </tbody>
@@ -324,6 +319,32 @@ Intelligence, 12(7), 629-639.</td></tr>
 <dd><p class="first last">during fit.</p>
 </dd>
 </dl>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="exposing.Exposer.inverse_locations">
+<code class="descname">inverse_locations</code><span class="sig-paren">(</span><em>locations</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/exposing/exposing.html#Exposer.inverse_locations"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#exposing.Exposer.inverse_locations" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returning indices of exposer corresponding to given subsamples.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>location</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array-like, shape = [n_samples, n_features]</span></dt>
+<dd><p class="first last">The training input samples.</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>subsamples</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array-like</span></dt>
+<dd><p class="first last">Indices for given samples</p>
 </dd>
 </dl>
 </td>
@@ -508,14 +529,17 @@ seen udring fit.</p>
 </table>
 <table border="1" class="docutils">
 <colgroup>
-<col width="52%" />
-<col width="48%" />
+<col width="70%" />
+<col width="30%" />
 </colgroup>
 <tbody valign="top">
 <tr class="row-odd"><td><strong>fit</strong></td>
 <td>&#160;</td>
 </tr>
-<tr class="row-even"><td><strong>predict</strong></td>
+<tr class="row-even"><td><strong>make_classification</strong></td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td><strong>predict</strong></td>
 <td>&#160;</td>
 </tr>
 </tbody>
