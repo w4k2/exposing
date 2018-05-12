@@ -63,22 +63,22 @@ def test_approaches():
         stop = timeit.default_timer()
         print(stop - start)
 
-"""
 def test_generation():
     X_train, X_test, y_train, y_test = breast_dataset()
     print(X_train.shape, X_test.shape)
-    approach = 'random'
     start = timeit.default_timer()
-    print(approach)
-    estimator = EE(approach=approach)
+
+    estimator = EE(approach='random', n_base=50)
     estimator.fit(X_train, y_train)
-    X, y = estimator.generate_samples(n_samples = 1)
+    print(estimator._prepare_generator())
+
+    # assert(False)
+    #X, y = estimator.make_classification(n_samples = 1)
     #score = estimator.score(X_test, y_test)
     #print(len(estimator.ensemble_))
     #print(score)
-    stop = timeit.default_timer()
-    print(X)
-    print(y)
-    print("Czas obliczen: %.3f s" % (stop - start))
-    assert(False)
-"""
+    #stop = timeit.default_timer()
+    #print(X)
+    #print(y)
+    #print("Czas obliczen: %.3f s" % (stop - start))
+    #assert(False)

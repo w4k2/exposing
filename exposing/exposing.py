@@ -68,6 +68,36 @@ class EE(BaseEstimator, ClassifierMixin):
         # Return the classifier
         return self
 
+    def _prepare_generator(self):
+        psize = self.grain * self.grain
+        established = []
+        pairs = []
+        units = []
+        for e in self.ensemble_:
+            subspace = e.given_subspace
+            count = 0
+            known = None
+            unknown = None
+            for feature in subspace:
+                if feature not in established:
+                    count += 1
+                    unknown = feature
+                    established.append(feature)
+                else:
+                    known = feature
+            if count == 0:
+                pass
+            elif count == 1:
+                units.append((known, unknown, e))
+            else:
+                pairs.append((subspace[0], subspace[1], e))
+            if len(established) == self.n_features_:
+                break
+        if len(established) == self.n_features_:
+            return pairs, units
+        else:
+            return None
+
     def make_classification(self, n_samples = 100):
         # MUSIMY KONIECZNIE DODAC SZUM DO PROBEK NA BAZIE PRZESKA
         # LOWANEGO ZIARNA. INACZEJ WSZYSTKIE WYGENEROWANE PROBKI
