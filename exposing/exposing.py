@@ -1,7 +1,7 @@
-"""
-This is exposing module, which contains classes of planar exposer and ensemble
-of them
-"""
+"""Exposing Classification"""
+
+# Author: Pawel Ksieniewicz <pawel.ksieniewicz@pwr.edu.pl>
+
 from builtins import range
 import numpy as np
 from sklearn.base import BaseEstimator, ClassifierMixin
@@ -15,9 +15,8 @@ from medpy.filter.smoothing import anisotropic_diffusion
 import matplotlib.colors as colors
 import itertools
 
-APPROACHES = ('brutal', 'random', 'mst')
+APPROACHES = ('brute', 'random', 'mst')
 FUSERS = ('equal', 'theta')
-
 
 class EE(BaseEstimator, ClassifierMixin):
     def __init__(self, grain=16, a_steps=5, n_base=15, n_seek=30,
@@ -43,7 +42,7 @@ class EE(BaseEstimator, ClassifierMixin):
         # Establish set of subspaces
         self.subspaces_ = None
         # print("Method is %s" % self.approach)
-        if self.approach == 'brutal':
+        if self.approach == 'brute':
             self.subspaces_ = list(itertools.combinations(range(self.n_features_), 2))
             pass
         elif self.approach == 'random':
@@ -68,6 +67,62 @@ class EE(BaseEstimator, ClassifierMixin):
 
         # Return the classifier
         return self
+
+    def make_classification(self, n_samples = 100):
+        # MUSIMY KONIECZNIE DODAC SZUM DO PROBEK NA BAZIE PRZESKA
+        # LOWANEGO ZIARNA. INACZEJ WSZYSTKIE WYGENEROWANE PROBKI
+        # ROZLOZA SIE NA SIATCE ZIARNA EKSPOZERA.
+        X = []
+        y = []
+        psize = self.grain * self.grain
+        print("%i features" % self.n_features_)
+        print("Classes: %s" % self.classes_)
+        for i in range(n_samples):
+            established = []
+            x = np.zeros(self.n_features_)
+            label = 0
+            print(i)
+            for e in self.ensemble_:
+                subspace = e.given_subspace
+                model = e.model_[:,:,label]
+                print("\nSubspace %s [model size %s]" % (subspace, model.shape))
+                count = 0
+                known = None
+                unknown = None
+                for feature in subspace:
+                    if feature not in established:
+                        count += 1
+                        unknown = feature
+                        established.append(feature)
+                    else:
+                        known = feature
+                if count == 0:
+                    print("Nothing to do, both established")
+                elif count == 1:
+                    print("One established (%i), calculating another (%i)" %
+                          (known, unknown))
+                    x[unknown] = 999
+                    print(x)
+                else:
+                    #print("Both (%s) to calculate" % subspace)
+                    linear = model.reshape(psize)
+                    linear = np.copy(linear) / np.sum(linear)
+                    a = np.random.choice(range(psize), p=linear)
+                    first = a // self.grain
+                    second = a % self.grain
+                    #print("a is %s (%i:%i)" % (a, first, second))
+                    backscaled = e.scaler_.transform([[first, second]])[0]
+                    #print(backscaled)
+
+                    x[subspace[0]] = backscaled[0]
+                    x[subspace[1]] = backscaled[1]
+                # print("E: %s" % established)
+                print("len(E) = %i" % len(established))
+
+            y.append(label)
+            X.append(x)
+
+        return np.array(X), np.array(y)
 
     def predict(self, X):
         # Check is fit had been called
@@ -98,7 +153,7 @@ class EE(BaseEstimator, ClassifierMixin):
 
 
 class Exposer(BaseEstimator, ClassifierMixin):
-    """A classifier using basic, planar exposer.
+    """A using basic, planar exposer usable for classification of datasets limited to two features.
 
     Notes
     -----
@@ -134,9 +189,6 @@ class Exposer(BaseEstimator, ClassifierMixin):
     .. [1] Ksieniewicz, P., Grana, M., Wozniak, M. (2017). Paired feature
        multilayer ensemble - concept and evaluation of a classifier. Journal of
        Intelligent and Fuzzy Systems,  32(2), 1427-1436.
-    .. [2] Perona, P., Malik, J. (1990). Scale-space and edge detection using
-       anisotropic diffusion. IEEE Transactions on Pattern Analysis and Machine
-       Intelligence, 12(7), 629-639.
     """
 
     def __init__(self, given_subspace=None, grain=16, a_steps=5):
@@ -280,6 +332,23 @@ class Exposer(BaseEstimator, ClassifierMixin):
             np.rint(transformed_subsamples * self.grain).astype('int64'),
             0, self.grain - 1)
         return locations
+
+    def inverse_locations(self, locations):
+        """Returning indices of exposer corresponding to given subsamples.
+
+        Parameters
+        ----------
+        location : array-like, shape = [n_samples, n_features]
+            The training input samples.
+
+        Returns
+        -------
+        subsamples : array-like
+            Indices for given samples
+        """
+        grained_locations = np.array(locations) / self.grain
+        subsamples = self.scaler_.inverse_transform(grained_locations)
+        return subsamples
 
     def signatures(self, X):
         """Returning signatures corresponding to given samples from exposed model
