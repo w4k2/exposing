@@ -79,6 +79,6 @@ def test_generation():
     stop = timeit.default_timer()
     print(X)
     print(y)
-    print("Czas obliczeń: %.3f s" % (stop - start))
+    print("Czas obliczen: %.3f s" % (stop - start))
     assert(False)
 """
