@@ -228,6 +228,36 @@
         <span class="c1"># Return the classifier</span>
         <span class="k">return</span> <span class="bp">self</span>
 
+    <span class="k">def</span> <span class="nf">_prepare_generator</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">psize</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">grain</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">grain</span>
+        <span class="n">established</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">pairs</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">units</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">ensemble_</span><span class="p">:</span>
+            <span class="n">subspace</span> <span class="o">=</span> <span class="n">e</span><span class="o">.</span><span class="n">given_subspace</span>
+            <span class="n">count</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="n">known</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="n">unknown</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="k">for</span> <span class="n">feature</span> <span class="ow">in</span> <span class="n">subspace</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">feature</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">established</span><span class="p">:</span>
+                    <span class="n">count</span> <span class="o">+=</span> <span class="mi">1</span>
+                    <span class="n">unknown</span> <span class="o">=</span> <span class="n">feature</span>
+                    <span class="n">established</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">feature</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">known</span> <span class="o">=</span> <span class="n">feature</span>
+            <span class="k">if</span> <span class="n">count</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">pass</span>
+            <span class="k">elif</span> <span class="n">count</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="n">units</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">known</span><span class="p">,</span> <span class="n">unknown</span><span class="p">,</span> <span class="n">e</span><span class="p">))</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">pairs</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">subspace</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">subspace</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">e</span><span class="p">))</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">established</span><span class="p">)</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_features_</span><span class="p">:</span>
+                <span class="k">break</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">established</span><span class="p">)</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_features_</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">pairs</span><span class="p">,</span> <span class="n">units</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+
     <span class="k">def</span> <span class="nf">make_classification</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n_samples</span> <span class="o">=</span> <span class="mi">100</span><span class="p">):</span>
         <span class="c1"># MUSIMY KONIECZNIE DODAC SZUM DO PROBEK NA BAZIE PRZESKA</span>
         <span class="c1"># LOWANEGO ZIARNA. INACZEJ WSZYSTKIE WYGENEROWANE PROBKI</span>
