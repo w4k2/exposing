@@ -81,6 +81,10 @@ def test_generation():
 def test_regeneration_power():
     X_train, X_test, y_train, y_test = breast_dataset()
 
+    print(np.sum(y_test==0))
+    print(np.sum(y_test==1))
+
+
     ee = EE(approach='random', n_base=50)
     ee.fit(X_train, y_train)
     X_reg, y_reg = ee.make_classification(1000)
@@ -108,6 +112,8 @@ def test_regeneration_power():
 
         print("Full: %.3f" % score_f)
         print("Reg.: %.3f" % score_r)
+
+    assert(False)
 
 
 def test_generation_preparing():
