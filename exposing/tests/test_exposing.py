@@ -70,6 +70,20 @@ def test_generation():
 
     estimator = EE(approach='random', n_base=50)
     estimator.fit(X_train, y_train)
+
+    a = estimator.make_classification()
+    print(a)
+
+    assert(False)
+
+
+def test_generation_preparing():
+    X_train, X_test, y_train, y_test = breast_dataset()
+    print(X_train.shape, X_test.shape)
+    start = timeit.default_timer()
+
+    estimator = EE(approach='random', n_base=50)
+    estimator.fit(X_train, y_train)
     print(estimator._prepare_generator())
 
     # assert(False)

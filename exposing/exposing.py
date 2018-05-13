@@ -1,9 +1,9 @@
 """Exposing Classification"""
-
 # Author: Pawel Ksieniewicz <pawel.ksieniewicz@pwr.edu.pl>
 
 from builtins import range
 import numpy as np
+np.set_printoptions(suppress=True,precision=2)
 from sklearn.base import BaseEstimator, ClassifierMixin
 from sklearn.utils.validation import check_X_y, check_array, check_is_fitted
 from sklearn.utils import check_random_state
@@ -98,10 +98,65 @@ class EE(BaseEstimator, ClassifierMixin):
         else:
             return None
 
-    def make_classification(self, n_samples = 100):
-        # MUSIMY KONIECZNIE DODAC SZUM DO PROBEK NA BAZIE PRZESKA
-        # LOWANEGO ZIARNA. INACZEJ WSZYSTKIE WYGENEROWANE PROBKI
-        # ROZLOZA SIE NA SIATCE ZIARNA EKSPOZERA.
+    def make_classification(self, n_samples = 3, p = None):
+        # Get generation scheme
+        pairs, units = self._prepare_generator()
+        print("Generation from pairs")
+
+        # Prepare labels
+        y = np.random.choice(self.classes_, n_samples, p = p)
+
+        # Prepare storage
+        X = np.zeros((n_samples, self.n_features_))
+        X_ = np.zeros((n_samples, self.n_features_),dtype=np.int16)
+
+        # Generate both
+        for setup in pairs:
+            #print("\nE in pair")
+            a, b, e = setup
+            #print(e.scaler_.data_min_)
+            #print(e.scaler_.data_max_)
+            #print(a, b, e)
+            #print(y)
+            sublocation, subsample = e.get_samples(y)
+            #print(sublocation)
+            #print(subsample)
+            X_[:,[a,b]] = sublocation
+            X[:,[a,b]] = subsample
+
+
+        for setup in units:
+            print("\nE in units")
+            a, b, e = setup
+            print(a, b, e)
+
+            partial_location = (X_[:,a], e.given_subspace[1] == a)
+            sublocation, subsample = e.get_samples(y, partial_location)
+            print("After getting samples")
+
+
+            print(X_[:,e.given_subspace])
+            print(X[:,e.given_subspace])
+
+            if e.given_subspace[1] == a:
+                X_[:,[b,a]] = sublocation
+                X[:,[b,a]] = subsample
+
+            else:
+                X_[:,[a,b]] = sublocation
+                X[:,[a,b]] = subsample
+            # break
+
+
+            print(X_[:,e.given_subspace])
+            print(X[:,e.given_subspace])
+
+
+        # print("X = %s" % X)
+        # print("X_ = %s" % X_)
+        return X, y
+
+        """
         X = []
         y = []
         psize = self.grain * self.grain
@@ -153,6 +208,7 @@ class EE(BaseEstimator, ClassifierMixin):
             X.append(x)
 
         return np.array(X), np.array(y)
+        """
 
     def predict(self, X):
         # Check is fit had been called
@@ -337,6 +393,13 @@ class Exposer(BaseEstimator, ClassifierMixin):
 
         self._calculate_measures()
 
+        # Prepare linear model
+        self.linear_model_ = self.model_.reshape((-1,
+                                                  len(self.classes_)))
+        self.linear_model_ = np.divide(self.linear_model_,
+                                       np.sum(self.linear_model_,
+                                              axis = 0))
+
         # Return the classifier
         return self
 
@@ -379,6 +442,58 @@ class Exposer(BaseEstimator, ClassifierMixin):
         grained_locations = np.array(locations) / self.grain
         subsamples = self.scaler_.inverse_transform(grained_locations)
         return subsamples
+
+    def get_samples(self, y, partial_location = None):
+        # MUSIMY KONIECZNIE DODAC SZUM DO PROBEK NA BAZIE PRZESKA
+        # LOWANEGO ZIARNA. INACZEJ WSZYSTKIE WYGENEROWANE PROBKI
+        # ROZLOZA SIE NA SIATCE ZIARNA EKSPOZERA.
+
+        # Prepare storage for results
+        X_ = np.zeros((len(y), 2), dtype=np.int16)
+
+        if partial_location == None:
+            # Prepare location space
+            psize = self.grain * self.grain
+            a = np.linspace(0,psize-1, psize, dtype=np.int16)
+
+            # Iterate through classes
+            for label in self.classes_:
+                # Establish mask on given labels
+                label_mask = y == label
+
+                # Get points from distribution
+                _ = np.random.choice(a, np.sum(y == label),
+                                     p=self.linear_model_[:,label])
+                X_[label_mask] = np.stack((_ // self.grain,
+                                           _ % self.grain)).T
+
+        else:
+            print("Preparing samples for partial location")
+            locs, is_column = partial_location
+
+            print(locs, is_column)
+
+            # Prepare location space
+            a = np.linspace(0,self.grain-1, self.grain, dtype=np.int16)
+
+            # Iterate through samples
+            for i, label in enumerate(y):
+                loc = locs[i]
+                print("Loc %i" % loc)
+                if is_column:
+                    p = self.model_[:,loc,label]
+                else:
+                    p = self.model_[loc,:,label]
+
+                p = np.divide(p, np.sum(p))
+                _ = np.random.choice(a, p=p)
+                print("%s gave %s" % (loc, _))
+                X_[i] = [_, loc] if is_column else [loc, _]
+
+        # Calculate subsamples from locations in distribution
+        X = self.inverse_locations(X_)
+
+        return X_, X
 
     def signatures(self, X):
         """Returning signatures corresponding to given samples from exposed model
