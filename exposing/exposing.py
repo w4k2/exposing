@@ -98,10 +98,9 @@ class EE(BaseEstimator, ClassifierMixin):
         else:
             return None
 
-    def make_classification(self, n_samples = 3, p = None):
+    def make_classification(self, n_samples = 1000, p = None):
         # Get generation scheme
         pairs, units = self._prepare_generator()
-        print("Generation from pairs")
 
         # Prepare labels
         y = np.random.choice(self.classes_, n_samples, p = p)
@@ -112,103 +111,24 @@ class EE(BaseEstimator, ClassifierMixin):
 
         # Generate both
         for setup in pairs:
-            #print("\nE in pair")
             a, b, e = setup
-            #print(e.scaler_.data_min_)
-            #print(e.scaler_.data_max_)
-            #print(a, b, e)
-            #print(y)
             sublocation, subsample = e.get_samples(y)
-            #print(sublocation)
-            #print(subsample)
             X_[:,[a,b]] = sublocation
             X[:,[a,b]] = subsample
 
-
+        # Generate unit
         for setup in units:
-            print("\nE in units")
             a, b, e = setup
-            print(a, b, e)
-
             partial_location = (X_[:,a], e.given_subspace[1] == a)
             sublocation, subsample = e.get_samples(y, partial_location)
-            print("After getting samples")
-
-
-            print(X_[:,e.given_subspace])
-            print(X[:,e.given_subspace])
-
             if e.given_subspace[1] == a:
                 X_[:,[b,a]] = sublocation
                 X[:,[b,a]] = subsample
-
             else:
                 X_[:,[a,b]] = sublocation
                 X[:,[a,b]] = subsample
-            # break
 
-
-            print(X_[:,e.given_subspace])
-            print(X[:,e.given_subspace])
-
-
-        # print("X = %s" % X)
-        # print("X_ = %s" % X_)
         return X, y
-
-        """
-        X = []
-        y = []
-        psize = self.grain * self.grain
-        print("%i features" % self.n_features_)
-        print("Classes: %s" % self.classes_)
-        for i in range(n_samples):
-            established = []
-            x = np.zeros(self.n_features_)
-            label = 0
-            print(i)
-            for e in self.ensemble_:
-                subspace = e.given_subspace
-                model = e.model_[:,:,label]
-                print("\nSubspace %s [model size %s]" % (subspace, model.shape))
-                count = 0
-                known = None
-                unknown = None
-                for feature in subspace:
-                    if feature not in established:
-                        count += 1
-                        unknown = feature
-                        established.append(feature)
-                    else:
-                        known = feature
-                if count == 0:
-                    print("Nothing to do, both established")
-                elif count == 1:
-                    print("One established (%i), calculating another (%i)" %
-                          (known, unknown))
-                    x[unknown] = 999
-                    print(x)
-                else:
-                    #print("Both (%s) to calculate" % subspace)
-                    linear = model.reshape(psize)
-                    linear = np.copy(linear) / np.sum(linear)
-                    a = np.random.choice(range(psize), p=linear)
-                    first = a // self.grain
-                    second = a % self.grain
-                    #print("a is %s (%i:%i)" % (a, first, second))
-                    backscaled = e.scaler_.transform([[first, second]])[0]
-                    #print(backscaled)
-
-                    x[subspace[0]] = backscaled[0]
-                    x[subspace[1]] = backscaled[1]
-                # print("E: %s" % established)
-                print("len(E) = %i" % len(established))
-
-            y.append(label)
-            X.append(x)
-
-        return np.array(X), np.array(y)
-        """
 
     def predict(self, X):
         # Check is fit had been called
@@ -468,10 +388,7 @@ class Exposer(BaseEstimator, ClassifierMixin):
                                            _ % self.grain)).T
 
         else:
-            print("Preparing samples for partial location")
             locs, is_column = partial_location
-
-            print(locs, is_column)
 
             # Prepare location space
             a = np.linspace(0,self.grain-1, self.grain, dtype=np.int16)
@@ -479,7 +396,6 @@ class Exposer(BaseEstimator, ClassifierMixin):
             # Iterate through samples
             for i, label in enumerate(y):
                 loc = locs[i]
-                print("Loc %i" % loc)
                 if is_column:
                     p = self.model_[:,loc,label]
                 else:
@@ -487,7 +403,6 @@ class Exposer(BaseEstimator, ClassifierMixin):
 
                 p = np.divide(p, np.sum(p))
                 _ = np.random.choice(a, p=p)
-                print("%s gave %s" % (loc, _))
                 X_[i] = [_, loc] if is_column else [loc, _]
 
         # Calculate subsamples from locations in distribution

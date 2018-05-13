@@ -4,7 +4,10 @@ from sklearn.datasets import make_circles, make_moons, load_breast_cancer
 from sklearn.model_selection import train_test_split
 import warnings
 from exposing import Exposer, EE
+from sklearn import base
+from sklearn.neighbors import KNeighborsClassifier
 import timeit
+from sklearn import tree, svm, naive_bayes
 
 def dataset():
     n_samples = 1000
@@ -70,11 +73,41 @@ def test_generation():
 
     estimator = EE(approach='random', n_base=50)
     estimator.fit(X_train, y_train)
+    a = estimator.make_classification(100)
 
-    a = estimator.make_classification()
-    print(a)
+    stop = timeit.default_timer()
+    print(stop - start)
 
-    assert(False)
+def test_regeneration_power():
+    X_train, X_test, y_train, y_test = breast_dataset()
+
+    ee = EE(approach='random', n_base=50)
+    ee.fit(X_train, y_train)
+    X_reg, y_reg = ee.make_classification(1000)
+
+    ee_score = ee.score(X_test, y_test)
+    print("EE score = %.3f" % ee_score)
+
+    clfs = {
+        'DT': tree.DecisionTreeClassifier,
+        'kNN': KNeighborsClassifier,
+        'SVC': svm.SVC,
+        'NB': naive_bayes.GaussianNB
+    }
+    for name in clfs:
+        print("\n- %s" % name)
+
+        clf_full = clfs[name]()
+        clf_reg = clfs[name]()
+
+        clf_full.fit(X_train, y_train)
+        clf_reg.fit(X_reg, y_reg)
+
+        score_f = clf_full.score(X_test, y_test)
+        score_r = clf_reg.score(X_test, y_test)
+
+        print("Full: %.3f" % score_f)
+        print("Reg.: %.3f" % score_r)
 
 
 def test_generation_preparing():
