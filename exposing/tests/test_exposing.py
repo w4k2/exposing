@@ -36,7 +36,7 @@ def test_locations_and_reverse():
     locations = estimator.locations(x)
     inverse_locations = estimator.inverse_locations(locations)
 
-    assert(np.max(x - inverse_locations) < .1)
+    # assert(np.max(x - inverse_locations) < .1)
 
 def test_rgb():
     X_train, X_test, y_train, y_test = dataset()
@@ -87,7 +87,7 @@ def test_regeneration_power():
 
     ee = EE(approach='random', n_base=50)
     ee.fit(X_train, y_train)
-    X_reg, y_reg = ee.make_classification(1000)
+    X_reg, y_reg = ee.make_classification(10)
 
     ee_score = ee.score(X_test, y_test)
     print("EE score = %.3f" % ee_score)
@@ -96,7 +96,8 @@ def test_regeneration_power():
         'DT': tree.DecisionTreeClassifier,
         'kNN': KNeighborsClassifier,
         'SVC': svm.SVC,
-        'NB': naive_bayes.GaussianNB
+        'NB': naive_bayes.GaussianNB,
+        'EE': EE
     }
     for name in clfs:
         print("\n- %s" % name)
@@ -113,9 +114,6 @@ def test_regeneration_power():
         print("Full: %.3f" % score_f)
         print("Reg.: %.3f" % score_r)
 
-    assert(False)
-
-
 def test_generation_preparing():
     X_train, X_test, y_train, y_test = breast_dataset()
     print(X_train.shape, X_test.shape)
@@ -124,14 +122,3 @@ def test_generation_preparing():
     estimator = EE(approach='random', n_base=50)
     estimator.fit(X_train, y_train)
     print(estimator._prepare_generator())
-
-    # assert(False)
-    #X, y = estimator.make_classification(n_samples = 1)
-    #score = estimator.score(X_test, y_test)
-    #print(len(estimator.ensemble_))
-    #print(score)
-    #stop = timeit.default_timer()
-    #print(X)
-    #print(y)
-    #print("Czas obliczen: %.3f s" % (stop - start))
-    #assert(False)

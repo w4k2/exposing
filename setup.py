@@ -18,7 +18,7 @@ except ImportError:
     sys.exit(1)
 
 setup(name='exposing',
-      version='0.1.0',
+      version='0.2',
       description='A template for scikit-learn compatible packages',
       author='Pawel Ksieniewicz',
       packages=find_packages(),
