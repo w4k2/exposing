@@ -13,6 +13,8 @@ from sklearn.utils.random import sample_without_replacement as swr
 from sklearn.preprocessing import MinMaxScaler
 from medpy.filter.smoothing import anisotropic_diffusion
 import matplotlib.colors as colors
+from skimage import filters
+from skimage.morphology import disk
 import itertools
 
 APPROACHES = ('brute', 'random', 'mst')
@@ -20,13 +22,14 @@ FUSERS = ('equal', 'theta')
 
 class EE(BaseEstimator, ClassifierMixin):
     def __init__(self, grain=16, a_steps=5, n_base=15, n_seek=30,
-                 approach='random', fuser='theta', random_state=0):
+                 approach='random', fuser='theta', random_state=0, focus = 2):
         self.grain = grain
         self.a_steps = a_steps
         self.n_base = n_base
         self.n_seek = n_seek
         self.approach = approach
         self.fuser = fuser
+        self.focus = focus
         self.random_state = random_state
 
     def fit(self, X, y):
@@ -56,6 +59,7 @@ class EE(BaseEstimator, ClassifierMixin):
         # Compose ensemble
         self.ensemble_ = [Exposer(grain=self.grain,
                                   a_steps=self.a_steps,
+                                  focus = self.focus,
                                   given_subspace=subspace)
                           for subspace in self.subspaces_]
 
@@ -165,7 +169,6 @@ class EE(BaseEstimator, ClassifierMixin):
 
         return self.classes_[prediction]
 
-
 class Exposer(BaseEstimator, ClassifierMixin):
     """A using basic, planar exposer usable for classification of datasets limited to two features.
 
@@ -205,9 +208,10 @@ class Exposer(BaseEstimator, ClassifierMixin):
        Intelligent and Fuzzy Systems,  32(2), 1427-1436.
     """
 
-    def __init__(self, given_subspace=None, grain=16, a_steps=5):
+    def __init__(self, given_subspace=None, grain=16, a_steps=5, focus=2):
         self.given_subspace = given_subspace
         self.grain = grain
+        self.focus = focus
         self.a_steps = a_steps
 
     def model(self):
@@ -306,7 +310,9 @@ class Exposer(BaseEstimator, ClassifierMixin):
         for layer in range(len(self.classes_)):
             plane = self.model_[:, :, layer]
             plane = anisotropic_diffusion(plane, niter=self.a_steps)
-            plane /= np.sum(plane)
+            plane /= np.max(plane)
+            plane = filters.gaussian(plane, sigma=self.focus)
+            plane /= np.max(plane)
             self.model_[:, :, layer] = plane
         self.model_ /= np.max(self.model_)
 
