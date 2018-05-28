@@ -17,11 +17,11 @@ from skimage import filters
 from skimage.morphology import disk
 import itertools
 
-APPROACHES = ('brute', 'random', 'mst')
+APPROACHES = ('brute', 'random', 'brute_cut', 'purified')
 FUSERS = ('equal', 'theta')
 
 class EE(BaseEstimator, ClassifierMixin):
-    def __init__(self, grain=16, a_steps=5, n_base=15, n_seek=30,
+    def __init__(self, grain=16, a_steps=5, n_base=16, n_seek=32,
                  approach='random', fuser='theta', random_state=0, focus = 2):
         self.grain = grain
         self.a_steps = a_steps
@@ -45,15 +45,12 @@ class EE(BaseEstimator, ClassifierMixin):
         # Establish set of subspaces
         self.subspaces_ = None
         # print("Method is %s" % self.approach)
-        if self.approach == 'brute':
+        if self.approach == 'brute' or self.approach == 'purified':
             self.subspaces_ = list(itertools.combinations(range(self.n_features_), 2))
-            pass
         elif self.approach == 'random':
             self.subspaces_ = [swr(self.n_features_, 2,
                                    random_state=random_state)
                                for i in range(self.n_base)]
-        elif self.approach == 'mst':
-            pass
         # print("Choosen subspaces: %s" % self.subspaces_)
 
         # Compose ensemble
@@ -65,6 +62,11 @@ class EE(BaseEstimator, ClassifierMixin):
 
         # Fit ensemble
         [clf.fit(X, y) for clf in self.ensemble_]
+
+        # Cut purified ensemble
+        if self.approach == 'purified':
+            self.ensemble_.sort(key=lambda x: x.theta_, reverse=True)
+            self.ensemble_ = self.ensemble_[:self.n_base]
 
         # Gather thetas
         self.thetas_ = np.array([clf.theta_ for clf in self.ensemble_])
@@ -338,8 +340,20 @@ class Exposer(BaseEstimator, ClassifierMixin):
         return self
 
     def _calculate_measures(self):
-        treshold = .7
+        # Miara jakości ekspozera, a wiec jego waga w komitecie, powinna nie wynikać jedynie z uśrednionej saturacji, a z jej współczynnika względem pokrycia przestrzeni.
+        #pow(sum((max-min)/max),2)
+        #print(self.given_subspace)
+        #a_max = np.max(self.model_,axis=2)
+        #a_min = np.min(self.model_,axis=2)
+        #print(np.min(a_max))
+        #self.theta_ = np.power(np.sum((a_max - a_min) * a_max),2)
+        #print(self.theta_.shape)
+        #print(self.theta_)
+        treshold = .5
         self.theta_ = np.mean(self._saturation[self._value > treshold])
+        #self.theta_ = np.power(self.theta_,2)
+        #print(self.theta_.shape)
+        #print(self.theta_)
 
     def locations(self, subsamples):
         """Returning indices of exposer corresponding to given subsamples.

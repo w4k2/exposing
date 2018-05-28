@@ -55,7 +55,7 @@ def test_ece():
 def test_approaches():
     X_train, X_test, y_train, y_test = breast_dataset()
     print(X_train.shape, X_test.shape)
-    for approach in ('random', 'brute'):
+    for approach in ('random', 'brute', 'purified'):
         start = timeit.default_timer()
         print(approach)
         estimator = EE(approach=approach)
