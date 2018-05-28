@@ -1,4 +1,4 @@
-# project-template - A template for scikit-learn extensions
+# exposing
 
 [![Travis Status](https://travis-ci.org/w4k2/exposing.svg?branch=master)](https://travis-ci.org/w4k2/exposing)
 [![Coveralls Status](https://coveralls.io/repos/w4k2/exposing/badge.svg?branch=master&service=github)](https://coveralls.io/r/w4k2/exposing)
