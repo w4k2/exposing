@@ -340,20 +340,8 @@ class Exposer(BaseEstimator, ClassifierMixin):
         return self
 
     def _calculate_measures(self):
-        # Miara jakości ekspozera, a wiec jego waga w komitecie, powinna nie wynikać jedynie z uśrednionej saturacji, a z jej współczynnika względem pokrycia przestrzeni.
-        #pow(sum((max-min)/max),2)
-        #print(self.given_subspace)
-        #a_max = np.max(self.model_,axis=2)
-        #a_min = np.min(self.model_,axis=2)
-        #print(np.min(a_max))
-        #self.theta_ = np.power(np.sum((a_max - a_min) * a_max),2)
-        #print(self.theta_.shape)
-        #print(self.theta_)
         treshold = .5
         self.theta_ = np.mean(self._saturation[self._value > treshold])
-        #self.theta_ = np.power(self.theta_,2)
-        #print(self.theta_.shape)
-        #print(self.theta_)
 
     def locations(self, subsamples):
         """Returning indices of exposer corresponding to given subsamples.
