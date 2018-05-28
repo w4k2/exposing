@@ -173,20 +173,23 @@
 <span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="k">import</span> <span class="n">MinMaxScaler</span>
 <span class="kn">from</span> <span class="nn">medpy.filter.smoothing</span> <span class="k">import</span> <span class="n">anisotropic_diffusion</span>
 <span class="kn">import</span> <span class="nn">matplotlib.colors</span> <span class="k">as</span> <span class="nn">colors</span>
+<span class="kn">from</span> <span class="nn">skimage</span> <span class="k">import</span> <span class="n">filters</span>
+<span class="kn">from</span> <span class="nn">skimage.morphology</span> <span class="k">import</span> <span class="n">disk</span>
 <span class="kn">import</span> <span class="nn">itertools</span>
 
-<span class="n">APPROACHES</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;brute&#39;</span><span class="p">,</span> <span class="s1">&#39;random&#39;</span><span class="p">,</span> <span class="s1">&#39;mst&#39;</span><span class="p">)</span>
+<span class="n">APPROACHES</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;brute&#39;</span><span class="p">,</span> <span class="s1">&#39;random&#39;</span><span class="p">,</span> <span class="s1">&#39;brute_cut&#39;</span><span class="p">,</span> <span class="s1">&#39;purified&#39;</span><span class="p">)</span>
 <span class="n">FUSERS</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;equal&#39;</span><span class="p">,</span> <span class="s1">&#39;theta&#39;</span><span class="p">)</span>
 
 <div class="viewcode-block" id="EE"><a class="viewcode-back" href="../../exposing.html#exposing.EE">[docs]</a><span class="k">class</span> <span class="nc">EE</span><span class="p">(</span><span class="n">BaseEstimator</span><span class="p">,</span> <span class="n">ClassifierMixin</span><span class="p">):</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">grain</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">a_steps</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">n_base</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span> <span class="n">n_seek</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span>
-                 <span class="n">approach</span><span class="o">=</span><span class="s1">&#39;random&#39;</span><span class="p">,</span> <span class="n">fuser</span><span class="o">=</span><span class="s1">&#39;theta&#39;</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">grain</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">a_steps</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">n_base</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">n_seek</span><span class="o">=</span><span class="mi">32</span><span class="p">,</span>
+                 <span class="n">approach</span><span class="o">=</span><span class="s1">&#39;random&#39;</span><span class="p">,</span> <span class="n">fuser</span><span class="o">=</span><span class="s1">&#39;theta&#39;</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">focus</span> <span class="o">=</span> <span class="mi">2</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">grain</span> <span class="o">=</span> <span class="n">grain</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">a_steps</span> <span class="o">=</span> <span class="n">a_steps</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">n_base</span> <span class="o">=</span> <span class="n">n_base</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">n_seek</span> <span class="o">=</span> <span class="n">n_seek</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">approach</span> <span class="o">=</span> <span class="n">approach</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">fuser</span> <span class="o">=</span> <span class="n">fuser</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">focus</span> <span class="o">=</span> <span class="n">focus</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">random_state</span> <span class="o">=</span> <span class="n">random_state</span>
 
     <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
@@ -202,25 +205,28 @@
         <span class="c1"># Establish set of subspaces</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">subspaces_</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="c1"># print(&quot;Method is %s&quot; % self.approach)</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">approach</span> <span class="o">==</span> <span class="s1">&#39;brute&#39;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">approach</span> <span class="o">==</span> <span class="s1">&#39;brute&#39;</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">approach</span> <span class="o">==</span> <span class="s1">&#39;purified&#39;</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">subspaces_</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">itertools</span><span class="o">.</span><span class="n">combinations</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n_features_</span><span class="p">),</span> <span class="mi">2</span><span class="p">))</span>
-            <span class="k">pass</span>
         <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">approach</span> <span class="o">==</span> <span class="s1">&#39;random&#39;</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">subspaces_</span> <span class="o">=</span> <span class="p">[</span><span class="n">swr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n_features_</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span>
                                    <span class="n">random_state</span><span class="o">=</span><span class="n">random_state</span><span class="p">)</span>
                                <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n_base</span><span class="p">)]</span>
-        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">approach</span> <span class="o">==</span> <span class="s1">&#39;mst&#39;</span><span class="p">:</span>
-            <span class="k">pass</span>
         <span class="c1"># print(&quot;Choosen subspaces: %s&quot; % self.subspaces_)</span>
 
         <span class="c1"># Compose ensemble</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ensemble_</span> <span class="o">=</span> <span class="p">[</span><span class="n">Exposer</span><span class="p">(</span><span class="n">grain</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">grain</span><span class="p">,</span>
                                   <span class="n">a_steps</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">a_steps</span><span class="p">,</span>
+                                  <span class="n">focus</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">focus</span><span class="p">,</span>
                                   <span class="n">given_subspace</span><span class="o">=</span><span class="n">subspace</span><span class="p">)</span>
                           <span class="k">for</span> <span class="n">subspace</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">subspaces_</span><span class="p">]</span>
 
         <span class="c1"># Fit ensemble</span>
         <span class="p">[</span><span class="n">clf</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span> <span class="k">for</span> <span class="n">clf</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">ensemble_</span><span class="p">]</span>
+
+        <span class="c1"># Cut purified ensemble</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">approach</span> <span class="o">==</span> <span class="s1">&#39;purified&#39;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ensemble_</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">theta_</span><span class="p">,</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ensemble_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ensemble_</span><span class="p">[:</span><span class="bp">self</span><span class="o">.</span><span class="n">n_base</span><span class="p">]</span>
 
         <span class="c1"># Gather thetas</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">thetas_</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">clf</span><span class="o">.</span><span class="n">theta_</span> <span class="k">for</span> <span class="n">clf</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">ensemble_</span><span class="p">])</span>
@@ -325,7 +331,6 @@
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">classes_</span><span class="p">[</span><span class="n">prediction</span><span class="p">]</span></div>
 
-
 <div class="viewcode-block" id="Exposer"><a class="viewcode-back" href="../../exposing.html#exposing.Exposer">[docs]</a><span class="k">class</span> <span class="nc">Exposer</span><span class="p">(</span><span class="n">BaseEstimator</span><span class="p">,</span> <span class="n">ClassifierMixin</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;A using basic, planar exposer usable for classification of datasets limited to two features.</span>
 
@@ -365,9 +370,10 @@
 <span class="sd">       Intelligent and Fuzzy Systems,  32(2), 1427-1436.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">given_subspace</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">grain</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">a_steps</span><span class="o">=</span><span class="mi">5</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">given_subspace</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">grain</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">a_steps</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">focus</span><span class="o">=</span><span class="mi">2</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">given_subspace</span> <span class="o">=</span> <span class="n">given_subspace</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">grain</span> <span class="o">=</span> <span class="n">grain</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">focus</span> <span class="o">=</span> <span class="n">focus</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">a_steps</span> <span class="o">=</span> <span class="n">a_steps</span>
 
 <div class="viewcode-block" id="Exposer.model"><a class="viewcode-back" href="../../exposing.html#exposing.Exposer.model">[docs]</a>    <span class="k">def</span> <span class="nf">model</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -466,7 +472,9 @@
         <span class="k">for</span> <span class="n">layer</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">classes_</span><span class="p">)):</span>
             <span class="n">plane</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_</span><span class="p">[:,</span> <span class="p">:,</span> <span class="n">layer</span><span class="p">]</span>
             <span class="n">plane</span> <span class="o">=</span> <span class="n">anisotropic_diffusion</span><span class="p">(</span><span class="n">plane</span><span class="p">,</span> <span class="n">niter</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">a_steps</span><span class="p">)</span>
-            <span class="n">plane</span> <span class="o">/=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">plane</span><span class="p">)</span>
+            <span class="n">plane</span> <span class="o">/=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">plane</span><span class="p">)</span>
+            <span class="n">plane</span> <span class="o">=</span> <span class="n">filters</span><span class="o">.</span><span class="n">gaussian</span><span class="p">(</span><span class="n">plane</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">focus</span><span class="p">)</span>
+            <span class="n">plane</span> <span class="o">/=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">plane</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">model_</span><span class="p">[:,</span> <span class="p">:,</span> <span class="n">layer</span><span class="p">]</span> <span class="o">=</span> <span class="n">plane</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">model_</span> <span class="o">/=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model_</span><span class="p">)</span>
 
@@ -492,7 +500,7 @@
         <span class="k">return</span> <span class="bp">self</span></div>
 
     <span class="k">def</span> <span class="nf">_calculate_measures</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="n">treshold</span> <span class="o">=</span> <span class="o">.</span><span class="mi">7</span>
+        <span class="n">treshold</span> <span class="o">=</span> <span class="o">.</span><span class="mi">5</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">theta_</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_saturation</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_value</span> <span class="o">&gt;</span> <span class="n">treshold</span><span class="p">])</span>
 
 <div class="viewcode-block" id="Exposer.locations"><a class="viewcode-back" href="../../exposing.html#exposing.Exposer.locations">[docs]</a>    <span class="k">def</span> <span class="nf">locations</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">subsamples</span><span class="p">):</span>
