@@ -161,14 +161,14 @@
 <span></span><span class="sd">&quot;&quot;&quot;Exposing Classification&quot;&quot;&quot;</span>
 <span class="c1"># Author: Pawel Ksieniewicz &lt;pawel.ksieniewicz@pwr.edu.pl&gt;</span>
 
-<span class="kn">from</span> <span class="nn">builtins</span> <span class="k">import</span> <span class="nb">range</span>
+<span class="kn">import</span> <span class="nn">itertools</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">builtins</span> <span class="k">import</span> <span class="nb">range</span>
 <span class="kn">from</span> <span class="nn">sklearn.base</span> <span class="k">import</span> <span class="n">BaseEstimator</span><span class="p">,</span> <span class="n">ClassifierMixin</span>
 <span class="kn">from</span> <span class="nn">sklearn.utils.validation</span> <span class="k">import</span> <span class="n">check_X_y</span><span class="p">,</span> <span class="n">check_array</span><span class="p">,</span> <span class="n">check_is_fitted</span>
 <span class="kn">from</span> <span class="nn">sklearn.utils</span> <span class="k">import</span> <span class="n">check_random_state</span>
 <span class="kn">from</span> <span class="nn">sklearn.utils.random</span> <span class="k">import</span> <span class="n">sample_without_replacement</span> <span class="k">as</span> <span class="n">swr</span>
 <span class="kn">from</span> <span class="nn">.Exposer</span> <span class="k">import</span> <span class="n">Exposer</span>
-<span class="kn">import</span> <span class="nn">itertools</span>
 
 <span class="n">APPROACHES</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;brute&#39;</span><span class="p">,</span> <span class="s1">&#39;random&#39;</span><span class="p">,</span> <span class="s1">&#39;brute_cut&#39;</span><span class="p">,</span> <span class="s1">&#39;purified&#39;</span><span class="p">)</span>
 <span class="n">FUSERS</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;equal&#39;</span><span class="p">,</span> <span class="s1">&#39;theta&#39;</span><span class="p">)</span>
