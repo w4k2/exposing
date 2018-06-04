@@ -9,6 +9,8 @@ from skimage import filters
 from sklearn.base import BaseEstimator, ClassifierMixin
 from sklearn.utils.validation import check_X_y, check_array, check_is_fitted
 from sklearn.utils.multiclass import check_classification_targets
+from sklearn.utils.multiclass import unique_labels
+from sklearn.utils.multiclass import _check_partial_fit_first_call
 from sklearn.preprocessing import MinMaxScaler
 
 

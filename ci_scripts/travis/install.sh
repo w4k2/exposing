@@ -34,7 +34,7 @@ if [[ "$COVERAGE" == "true" ]]; then
     pip install coverage coveralls scikit-image
 fi
 
-pip install pytest pytest-cov codecov medpy matplotlib future stream-learn
+pip install pytest pytest-cov codecov medpy matplotlib future
 
 python --version
 python -c "import numpy; print('numpy %s' % numpy.__version__)"
