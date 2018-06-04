@@ -35,6 +35,7 @@ if [[ "$COVERAGE" == "true" ]]; then
 fi
 
 pip install pytest pytest-cov codecov medpy matplotlib future
+pip install stream-learn
 
 python --version
 python -c "import numpy; print('numpy %s' % numpy.__version__)"
