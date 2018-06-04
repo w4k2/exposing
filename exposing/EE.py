@@ -1,14 +1,14 @@
 """Exposing Classification"""
 # Author: Pawel Ksieniewicz <pawel.ksieniewicz@pwr.edu.pl>
 
-from builtins import range
+import itertools
 import numpy as np
+from builtins import range
 from sklearn.base import BaseEstimator, ClassifierMixin
 from sklearn.utils.validation import check_X_y, check_array, check_is_fitted
 from sklearn.utils import check_random_state
 from sklearn.utils.random import sample_without_replacement as swr
 from .Exposer import Exposer
-import itertools
 
 APPROACHES = ('brute', 'random', 'brute_cut', 'purified')
 FUSERS = ('equal', 'theta')
