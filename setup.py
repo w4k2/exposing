@@ -1,5 +1,5 @@
 from __future__ import print_function
-import sys
+import sys, os
 from setuptools import setup, find_packages
 
 with open('requirements.txt') as f:
@@ -25,7 +25,7 @@ except ImportError:
 
 setup(name='exposing',
       version=__version__,
-      description='A template for scikit-learn compatible packages',
+      description='Exposing classification algorithms compatible with scikit-learn API.',
       author='Pawel Ksieniewicz',
       packages=find_packages(),
       install_requires=INSTALL_REQUIRES,
