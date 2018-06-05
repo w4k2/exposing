@@ -5,6 +5,12 @@ from setuptools import setup, find_packages
 with open('requirements.txt') as f:
     INSTALL_REQUIRES = [l.strip() for l in f.readlines() if l]
 
+
+# get __version__ from _version.py
+ver_file = os.path.join('exposing', '_version.py')
+with open(ver_file) as f:
+    exec(f.read())
+
 try:
     import numpy
 except ImportError:
@@ -18,7 +24,7 @@ except ImportError:
     sys.exit(1)
 
 setup(name='exposing',
-      version='0.2',
+      version=__version__,
       description='A template for scikit-learn compatible packages',
       author='Pawel Ksieniewicz',
       packages=find_packages(),
