@@ -7,10 +7,11 @@ from builtins import range
 from sklearn.base import BaseEstimator, ClassifierMixin
 from sklearn.utils.validation import check_X_y, check_array, check_is_fitted
 from sklearn.utils import check_random_state
+from sklearn.utils.multiclass import _check_partial_fit_first_call
 from sklearn.utils.random import sample_without_replacement as swr
 from .Exposer import Exposer
 
-APPROACHES = ('brute', 'random', 'brute_cut', 'purified')
+APPROACHES = ('brute', 'random', 'purified')
 FUSERS = ('equal', 'theta')
 
 class EE(BaseEstimator, ClassifierMixin):
@@ -25,6 +26,14 @@ class EE(BaseEstimator, ClassifierMixin):
         self.focus = focus
         self.random_state = random_state
 
+    def partial_fit(self, X, y, classes=None):
+        if _check_partial_fit_first_call(self, classes):
+            self.fit(X, y)
+        else:
+            for e in self.ensemble_:
+                e.partial_fit(X, y)
+
+
     def fit(self, X, y):
         X, y = check_X_y(X, y)
         random_state = check_random_state(self.random_state)
@@ -37,14 +46,12 @@ class EE(BaseEstimator, ClassifierMixin):
 
         # Establish set of subspaces
         self.subspaces_ = None
-        # print("Method is %s" % self.approach)
         if self.approach == 'brute' or self.approach == 'purified':
             self.subspaces_ = list(itertools.combinations(range(self.n_features_), 2))
         elif self.approach == 'random':
             self.subspaces_ = [swr(self.n_features_, 2,
                                    random_state=random_state)
                                for i in range(self.n_base)]
-        # print("Choosen subspaces: %s" % self.subspaces_)
 
         # Compose ensemble
         self.ensemble_ = [Exposer(grain=self.grain,

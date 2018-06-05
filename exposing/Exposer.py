@@ -95,6 +95,92 @@ class Exposer(BaseEstimator, ClassifierMixin):
         rgb = colors.hsv_to_rgb(self._hsv)
         return rgb
 
+    def expose(self, subspaced_X, y):
+        # Empty model
+        model = np.zeros((
+            self.grain, self.grain,
+            len(self.classes_))).astype('float_')
+
+        # Exposing
+        X_locations = self.locations(subspaced_X)
+        unique, counts = np.unique(np.array(
+            [X_locations[:, 0], X_locations[:, 1], y]).T,
+                                   return_counts=True, axis=0)
+        model[unique[:, 0], unique[:, 1], unique[:, 2]] += counts
+
+        # Blurring and normalization
+        for layer in range(len(self.classes_)):
+            plane = model[:, :, layer]
+            plane = anisotropic_diffusion(plane, niter=self.a_steps)
+            plane /= np.max(plane)
+            plane = filters.gaussian(plane, sigma=self.focus)
+            plane /= np.max(plane)
+            model[:, :, layer] = plane
+        model /= np.max(model)
+
+        return model
+
+    def _assumed_subspace(self):
+        # Procedure to assume given subspace when none is given
+        if self.n_features_ == 1:
+            return np.array((0, 0))
+        elif self.n_features_ == 2:
+            return np.array((0, 1))
+        else:
+            return np.array((-1, -2))
+
+    def partial_fit(self, X, y, classes=None):
+        X, y = check_X_y(X, y)
+
+        # Check consitency
+        if hasattr(self, 'X_') and X.shape[1] != self.X_.shape[1]:
+            raise ValueError('number of features does not match')
+
+        self.X_ = X
+        self.y_ = y
+
+
+        if not hasattr(self, 'n_features_'):
+            self.n_features_ = X.shape[1]
+
+        # Get subspace
+        if not hasattr(self, 'subspace_'):
+            if self.given_subspace is None:
+                self.subspace_ = self._assumed_subspace()
+            else:
+                self.subspace_ = np.array(self.given_subspace)
+
+        # Acquire subspaced X
+        subspaced_X = X[:, self.subspace_].astype('float64')
+
+        if _check_partial_fit_first_call(self, classes):
+            self.classes_ = classes
+
+            # Scaler
+            self.scaler_ = MinMaxScaler()
+            self.scaler_.fit(subspaced_X)
+
+        # Store the classes seen during fit
+        # TODO It's definitely not optimal
+        y = [list(self.classes_).index(a) for a in y]
+
+        # Expose
+        if hasattr(self, 'model_'):
+            self.model_ += self.expose(subspaced_X, y)
+        else:
+            self.model_ = self.expose(subspaced_X, y)
+
+        # HSV
+        self._hue = np.argmax(self.model_, axis=2) / float(len(self.classes_))
+        self._saturation = np.max(self.model_, axis=2) - \
+            np.min(self.model_, axis=2)
+        self._value = np.max(self.model_, axis=2)
+        self._hsv = np.dstack((self._hue, self._saturation, self._value))
+
+        # Calculate measures
+        self._calculate_measures()
+
+
     def fit(self, X, y):
         """A fitting function for a classifier.
 
@@ -114,18 +200,14 @@ class Exposer(BaseEstimator, ClassifierMixin):
         X, y = check_X_y(X, y)
         check_classification_targets(y)
 
+        # Store training set and number of features
         self.X_ = X
         self.y_ = y
         self.n_features_ = X.shape[1]
 
-        # Last two in subspace when none provided
+        # Establish subspace
         if self.given_subspace is None:
-            if self.n_features_ == 1:
-                self.subspace_ = np.array((0, 0))
-            elif self.n_features_ == 2:
-                self.subspace_ = np.array((0, 1))
-            else:
-                self.subspace_ = np.array((-1, -2))
+            self.subspace_ = self._assumed_subspace()
         else:
             self.subspace_ = np.array(self.given_subspace)
 
@@ -139,29 +221,8 @@ class Exposer(BaseEstimator, ClassifierMixin):
         self.scaler_ = MinMaxScaler()
         self.scaler_.fit(subspaced_X)
 
-        # Empty model
-        self.model_ = np.zeros((
-            self.grain, self.grain,
-            len(self.classes_))).astype('float_')
-
-        # Exposing
-        X_locations = self.locations(subspaced_X)
-        unique, counts = np.unique(np.array(
-            [X_locations[:, 0], X_locations[:, 1], y]).T,
-                                   return_counts=True, axis=0)
-        self.model_[unique[:, 0], unique[:, 1], unique[:, 2]] += counts
-
-        # Blurring and normalization
-        for layer in range(len(self.classes_)):
-            plane = self.model_[:, :, layer]
-            plane = anisotropic_diffusion(plane, niter=self.a_steps)
-            plane /= np.max(plane)
-            plane = filters.gaussian(plane, sigma=self.focus)
-            plane /= np.max(plane)
-            self.model_[:, :, layer] = plane
-        self.model_ /= np.max(self.model_)
-
-        # Calculate measures
+        # Expose
+        self.model_ = self.expose(subspaced_X, y)
 
         # HSV
         self._hue = np.argmax(self.model_, axis=2) / float(len(self.classes_))
@@ -170,6 +231,7 @@ class Exposer(BaseEstimator, ClassifierMixin):
         self._value = np.max(self.model_, axis=2)
         self._hsv = np.dstack((self._hue, self._saturation, self._value))
 
+        # Calculate measures
         self._calculate_measures()
 
         # Prepare linear model
